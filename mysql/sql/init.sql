@@ -31,6 +31,7 @@ CREATE TABLE event_attendance (
   deleted_at DATETIME
 );
 
+-- パスワードは全て'password'
 INSERT INTO users SET name='小林哲', email='akira@email.com', password='$2y$10$k29VrrWk.zMwycyH8IoSWe1ZTeZ5gwQ3Y6QtOLivUwWWnevhe/6N6';
 INSERT INTO users SET name='青柳仁', email='jin@email.com', password='$2y$10$9AajUv0ZwxO.gA0EcxxUyeEMRzMD/LSBT35k45hFgIoyaM6pCfrEy';
 INSERT INTO users SET name='寺嶋里紗', email='lisa@email.com', password='$2y$10$XrueV1jzbCGJsJI9CsOGSehojBJDrlI54cmByZH5FAE5g6JG82xQe';
