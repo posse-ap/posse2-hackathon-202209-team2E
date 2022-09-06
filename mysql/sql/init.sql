@@ -2,6 +2,14 @@ DROP SCHEMA IF EXISTS posse;
 CREATE SCHEMA posse;
 USE posse;
 
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255)NOT NULL
+);
+
 DROP TABLE IF EXISTS events;
 CREATE TABLE events (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -23,6 +31,10 @@ CREATE TABLE event_attendance (
   deleted_at DATETIME
 );
 
+INSERT INTO users SET name='小林哲', email='akira@email.com', password='password';
+INSERT INTO users SET name='青柳仁', email='jin@email.com', password='password';
+INSERT INTO users SET name='寺嶋里紗', email='lisa@email.com', password='password';
+INSERT INTO users SET name='寺下渓志郎', email='keishiro@email.com', password='password';
 
 INSERT INTO events SET name='縦モク', start_at='2021/08/01 21:00', end_at='2021/08/01 23:00';
 INSERT INTO events SET name='横モク', start_at='2021/08/02 21:00', end_at='2021/08/02 23:00';
