@@ -38,12 +38,21 @@ INSERT INTO events SET name='横モク', start_at='2022/08/23 21:00', end_at='20
 INSERT INTO events SET name='スペモク', start_at='2022/08/24 20:00', end_at='2022/08/24 22:00';
 INSERT INTO events SET name='遊び', start_at='2022/09/22 18:00', end_at='2022/09/22 22:00';
 INSERT INTO events SET name='ハッカソン', start_at='2022/09/03 10:00', end_at='2022/09/03 22:00';
-INSERT INTO events SET name='遊び', start_at='2022/09/06 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/12/06 18:00', end_at='2022/12/06 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/11/02 18:00', end_at='2022/11/06 22:00';
 INSERT INTO events SET name='遊び', start_at='2022/09/09 18:00', end_at='2022/09/06 22:00';
-INSERT INTO events SET name='遊び', start_at='2022/09/09 18:00', end_at='2022/09/06 22:00';
-INSERT INTO events SET name='遊び', start_at='2022/09/10 18:00', end_at='2022/09/06 22:00';
-INSERT INTO events SET name='遊び', start_at='2022/09/28 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='縦モク', start_at='2022/07/10 18:00', end_at='2022/07/06 22:00';
+INSERT INTO events SET name='ハッカソン', start_at='2022/03/28 18:00', end_at='2022/03/06 22:00';
 INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='スぺモク', start_at='2022/05/26 18:00', end_at='2022/05/06 22:00';
+INSERT INTO events SET name='横モク', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/01/26 18:00', end_at='2022/01/06 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='スぺモク', start_at='2022/10/26 18:00', end_at='2022/10/06 22:00';
+INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='ハッカソン', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
+INSERT INTO events SET name='縦モク', start_at='2023/01/1 18:00', end_at='2022/01/03 22:00';
 
 INSERT INTO event_attendance SET event_id=1;
 INSERT INTO event_attendance SET event_id=1;
