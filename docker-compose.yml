@@ -1,7 +1,7 @@
 version: '3'
 services:
   nginx:
-    image: nginx:latest
+    image: nginx:1.21.6
     ports:
       - "80:80"
     depends_on:
@@ -30,6 +30,6 @@ services:
       - ./mysql/sql:/docker-entrypoint-initdb.d
       - ./mysql/data:/var/lib/mysql
   mailhog:
-    image: mailhog/mailhog
+    image: mailhog/mailhog:v1.0.1
     ports:
       - "8025:8025"
