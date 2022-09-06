@@ -28,7 +28,9 @@ CREATE TABLE event_attendance (
   user_id INT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  deleted_at DATETIME
+  deleted_at DATETIME,
+  FOREIGN KEY (event_id) REFERENCES events(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
 INSERT INTO users SET name='小林哲', email='akira@email.com', password='password';
@@ -52,9 +54,9 @@ INSERT INTO events SET name='遊び', start_at='2021/09/22 18:00', end_at='2021/
 INSERT INTO events SET name='ハッカソン', start_at='2021/09/03 10:00', end_at='2021/09/03 22:00';
 INSERT INTO events SET name='遊び', start_at='2021/09/06 18:00', end_at='2021/09/06 22:00';
 
-INSERT INTO event_attendance SET event_id=1;
-INSERT INTO event_attendance SET event_id=1;
-INSERT INTO event_attendance SET event_id=1;
-INSERT INTO event_attendance SET event_id=2;
-INSERT INTO event_attendance SET event_id=2;
-INSERT INTO event_attendance SET event_id=3;
+INSERT INTO event_attendance SET event_id=1, user_id=1;
+INSERT INTO event_attendance SET event_id=1, user_id=2;
+INSERT INTO event_attendance SET event_id=1, user_id=3;
+INSERT INTO event_attendance SET event_id=2, user_id=1;
+INSERT INTO event_attendance SET event_id=2, user_id=4;
+INSERT INTO event_attendance SET event_id=3, user_id=4;
