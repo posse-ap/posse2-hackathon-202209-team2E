@@ -28,8 +28,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $isLoginUser = !empty($user);
   if ($isLoginUser) {
     $_SESSION['user_id'] = $user['id'];
-    header('Location: /');
-    exit();
+    $_SESSION['role_id'] = $user['role_id'];
+    if($_SESSION['role_id'] === '1'){
+      header('Location: /');
+      exit();
+    } else {
+      header('Location: /admin');
+      exit();
+    }
   } else {
     $_SESSION['error_message'] = 'メールアドレスまたはパスワードが間違っています';
     header('Location: /auth/login');
