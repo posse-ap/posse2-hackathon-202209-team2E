@@ -2,6 +2,14 @@ DROP SCHEMA IF EXISTS posse;
 CREATE SCHEMA posse;
 USE posse;
 
+DROP TABLE IF EXISTS users;
+CREATE TABLE users (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    password VARCHAR(255)NOT NULL
+);
+
 DROP TABLE IF EXISTS events;
 CREATE TABLE events (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
@@ -20,9 +28,15 @@ CREATE TABLE event_attendance (
   user_id INT,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  deleted_at DATETIME
+  deleted_at DATETIME,
+  FOREIGN KEY (event_id) REFERENCES events(id),
+  FOREIGN KEY (user_id) REFERENCES users(id)
 );
 
+INSERT INTO users SET name='小林哲', email='akira@email.com', password='password';
+INSERT INTO users SET name='青柳仁', email='jin@email.com', password='password';
+INSERT INTO users SET name='寺嶋里紗', email='lisa@email.com', password='password';
+INSERT INTO users SET name='寺下渓志郎', email='keishiro@email.com', password='password';
 
 INSERT INTO events SET name='縦モク', start_at='2022/08/01 21:00', end_at='2022/08/01 23:00';
 INSERT INTO events SET name='横モク', start_at='2022/08/02 21:00', end_at='2022/08/02 23:00';
@@ -54,9 +68,9 @@ INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/
 INSERT INTO events SET name='ハッカソン', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
 INSERT INTO events SET name='縦モク', start_at='2023/01/1 18:00', end_at='2022/01/03 22:00';
 
-INSERT INTO event_attendance SET event_id=1;
-INSERT INTO event_attendance SET event_id=1;
-INSERT INTO event_attendance SET event_id=1;
-INSERT INTO event_attendance SET event_id=2;
-INSERT INTO event_attendance SET event_id=2;
-INSERT INTO event_attendance SET event_id=3;
+INSERT INTO event_attendance SET event_id=1, user_id=1;
+INSERT INTO event_attendance SET event_id=1, user_id=2;
+INSERT INTO event_attendance SET event_id=1, user_id=3;
+INSERT INTO event_attendance SET event_id=2, user_id=1;
+INSERT INTO event_attendance SET event_id=2, user_id=4;
+INSERT INTO event_attendance SET event_id=3, user_id=4;
