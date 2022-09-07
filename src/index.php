@@ -129,19 +129,19 @@ function get_day_of_week($w)
             </div>
             <div class="flex flex-col justify-between text-right">
               <div>
-                <?php if ($event['id'] % 3 === 1) : ?>
-                  <!--
-                  <p class="text-sm font-bold text-yellow-400">未回答</p>
-                  <p class="text-xs text-yellow-400">期限 <?php echo date("m月d日", strtotime('-3 day', $end_date)); ?></p>
-                  -->
-                <?php elseif ($event['id'] % 3 === 2) : ?>
-                  <!--
-                  <p class="text-sm font-bold text-gray-300">不参加</p>
-                  -->
-                <?php else : ?>
-                  <!--
+                <?php if ($event_attendance['status'] === 'presence'): ?>
+                  
                   <p class="text-sm font-bold text-green-400">参加</p>
-                  -->
+                
+                <?php elseif ($event_attendance['status'] === 'absence') : ?>
+                  
+                  <p class="text-sm font-bold text-gray-300">不参加</p>
+                
+                <?php else : ?>
+                  
+                  <p class="text-sm font-bold text-yellow-400">未回答</p>
+                  <!-- <p class="text-xs text-yellow-400">期限 <?php echo date("m月d日", strtotime('-3 day', $end_date)); ?></p> -->
+                
                 <?php endif; ?>
               </div>
               <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>

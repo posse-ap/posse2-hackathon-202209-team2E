@@ -25,10 +25,6 @@ if (isset($_GET['eventId'])) {
       $eventMessage = date("Y年m月d日", $start_date) . '（' . get_day_of_week(date("w", $start_date)) . '） ' . date("H:i", $start_date) . '~' . date("H:i", $end_date) . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
     }
 
-    if ($event['id'] % 3 === 1) $status = 0;
-    elseif ($event['id'] % 3 === 2) $status = 1;
-    else $status = 2;
-
     $array = [
       'id' => $event['id'],
       'name' => $event['name'],
