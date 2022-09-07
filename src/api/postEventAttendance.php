@@ -4,7 +4,7 @@ session_start();
 header('Content-Type: application/json; charset=UTF-8');
 session_start();
 
-$eventId = $_POST['eventId'];
+$eventId = $_POST['event_id'];
 $userId = $_SESSION['user_id'];
 $status = $_POST['status'];
 
