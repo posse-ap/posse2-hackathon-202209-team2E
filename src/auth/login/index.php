@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($isLoginUser) {
     $_SESSION['user_id'] = $user['id'];
     $_SESSION['role_id'] = $user['role_id'];
-    if($_SESSION['role_id'] === '1'){
+    if ($_SESSION['role_id'] === '1') {
       header('Location: /');
       exit();
     } else {
@@ -78,7 +78,7 @@ unset($_SESSION['error_message']);
         <input type="submit" value="ログイン" class="cursor-pointer w-full p-3 text-md text-white bg-blue-400 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-300">
       </form>
       <div class="text-center text-xs text-gray-400 mt-6">
-        <a href="/">パスワードを忘れた方はこちら</a>
+        <a href="/auth/reset">パスワードを忘れた方はこちら</a>
       </div>
     </div>
   </main>

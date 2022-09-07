@@ -8,9 +8,7 @@ if (!isset($_SESSION['user_id'])) {
   exit();
 }
 
-
-
-$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id');
+$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id ORDER BY events.start_at ASC');
 $events = $stmt->fetchAll();
 
 $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="presence"');
