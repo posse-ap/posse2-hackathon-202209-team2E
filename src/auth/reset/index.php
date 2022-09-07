@@ -1,5 +1,7 @@
 <?php
 
+require('/var/www/html/dbconnect.php');
+
 session_start();
 
 // フォーム送信時
@@ -26,7 +28,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
   // DBにメールアドレスがない場合、何もせずに送信完了画面に飛ばす
   if (!$user) {
-    header('Location: /auth/sent');
+    header('Location: /auth/reset/sent');
     exit();
   }
 
@@ -43,10 +45,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $passwordResetToken = uniqid(bin2hex(random_bytes(1)));
 
   try {
-    $pdo->beginTransaction();
+    $db->beginTransaction();
 
     // ユーザーをpassword_resetsに登録する
-    $stmt = $pdo->prepare($sql);
+    $stmt = $db->prepare($sql);
     $stmt->execute([
       ':email' => $email,
       ':token' => $passwordResetToken,
@@ -70,12 +72,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$isSent) throw new Exception('メール送信に失敗しました。');
 
     // メール送信が完了した時点でテーブルの変更を確定する
-    $pdo->commit();
+    $db->commit();
+    header('Location: /auth/reset/sent');
+    exit();
   } catch (Exception $e) {
-    $pdo->rollBack();
+    $db->rollBack();
     exit($e->getMessage());
   }
-
 }
 
 // エラーメッセージ
