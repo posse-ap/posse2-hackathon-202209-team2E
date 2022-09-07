@@ -8,9 +8,15 @@ if (!isset($_SESSION['user_id'])) {
   exit();
 }
 
+// イベントの情報を取得
 $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id ORDER BY events.start_at ASC');
+
 $events = $stmt->fetchAll();
 
+// ログインしているユーザーの参加ステータスを取得
+$stmt = $db->prepare('SELECT event_id, status FROM event_attendance WHERE user_id = ?');
+$stmt->execute([$_SESSION['user_id']]);
+$eventAttendances = $stmt->fetchAll();
 
 $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="presence"');
 $stmt->execute([$_SESSION['user_id']]);
@@ -20,24 +26,33 @@ $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AN
 $stmt->execute([$_SESSION['user_id']]);
 $eventAbsentId = $stmt->fetchAll();
 
-$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="unsbmitted"');
+$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="not_submitted"');
 $stmt->execute([$_SESSION['user_id']]);
-$eventUnsubmittedId = $stmt->fetchAll();
+$eventNotsubmittedId = $stmt->fetchAll();
 
 
-if ($_GET{'status'} === 'presence') {
+if($_GET['status'] === 'presence'){
   $eventPresentArray = [];
   foreach ($events as $event) {
     foreach ($eventPresentId as $ID) {
       if ($event['id'] === $ID['event_id']) {
         array_push($eventPresentArray, $event);
+
+// 以下from develop!!!!!!
+// if($_GET['status'] === 'presence'){
+//   $eventArray=[];
+//   foreach($events as $event){
+//     foreach($eventId as $ID){
+//       if($event ['id'] === $ID['event_id']){
+//         array_push($eventArray, $event);
+
         break;
       }
     }
   }
 }
 
-if ($_GET{'status'} === 'absence') {
+if ($_GET['status'] === 'absence') {
   $eventAbsentArray = [];
   foreach ($events as $event) {
     foreach ($eventAbsentId as $ID) {
@@ -49,12 +64,12 @@ if ($_GET{'status'} === 'absence') {
   }
 }
 
-if ($_GET{'status'} === 'unsubmitted') {
-  $eventUnsubmittedArray = [];
+if ($_GET['status'] === 'not_submitted') {
+  $eventNotsubmittedArray = [];
   foreach ($events as $event) {
     foreach ($eventAbsentId as $ID) {
       if ($event['id'] === $ID['event_id']) {
-        array_push($eventUnsubmittedArray, $event);
+        array_push($eventNotsubmittedArray, $event);
         break;
       }
     }
@@ -105,9 +120,8 @@ function get_day_of_week($w)
         <div class="flex">
           <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
           <a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
-
           <a href="?status=absence" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
-          <a href="?status=unsubmitted" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+          <a href="?status=not_submitted" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
         </div>
       </div>
 
@@ -119,14 +133,21 @@ function get_day_of_week($w)
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
         $futureEvents = [];
-        if ($_GET{'status'} === 'presence') {
+        if ($_GET['status'] === 'presence') {
           $displayEvent = $eventPresentArray;
-        } elseif ($_GET{'status'} === 'absence') {
+        } elseif ($_GET['status'] === 'absence') {
           $displayEvent = $eventAbsentArray;
-        } elseif ($_GET{'status'} === 'unsubmitted') {
-          $displayEvent = $eventUnsubmittedArray;
+        } elseif ($_GET['status'] === 'not_submitted') {
+          $displayEvent = $eventNotsubmittedArray;
         } else {
           $displayEvent = $events;
+
+// 以下from develop!!!!
+        // if($_GET['status'] === 'presence'){
+        //   $displayEvent=$eventArray;
+        // }else{
+        //   $displayEvent=$events;
+
         }
         foreach ($displayEvent as $event) {
           $start_date = strtotime($event['start_at']);
@@ -178,31 +199,39 @@ function get_day_of_week($w)
           $start_date = strtotime($event['start_at']);
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
+
+          // イベントの参加ステータスを取り出す
+          $eventAttendanceIndex = array_search($event['id'], array_column($eventAttendances, 'event_id'));
+          if ($eventAttendanceIndex === false) {
+            $status = 'not_submitted';
+          } else {
+            $status = $eventAttendances[$eventAttendanceIndex]['status'];
+          }
         ?>
 
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
-              <p><?php echo date("Y年m月d日（${day_of_week}）", $start_date); ?></p>
+              <p><?php echo date("Y年n月j日(${day_of_week})", $start_date); ?></p>
               <p class="text-xs text-gray-600">
                 <?php echo date("H:i", $start_date) . "~" . date("H:i", $end_date); ?>
               </p>
             </div>
             <div class="flex flex-col justify-between text-right">
               <div>
-                <?php if ($event['id'] % 3 === 1) : ?>
-                  <!--
-                  <p class="text-sm font-bold text-yellow-400">未回答</p>
-                  <p class="text-xs text-yellow-400">期限 <?php echo date("m月d日", strtotime('-3 day', $end_date)); ?></p>
-                  -->
-                <?php elseif ($event['id'] % 3 === 2) : ?>
-                  <!--
-                  <p class="text-sm font-bold text-gray-300">不参加</p>
-                  -->
-                <?php else : ?>
-                  <!--
+                <?php if ($status === 'presence') : ?>
+
                   <p class="text-sm font-bold text-green-400">参加</p>
-                  -->
+
+                <?php elseif ($status === 'absence') : ?>
+
+                  <p class="text-sm font-bold text-gray-300">不参加</p>
+
+                <?php elseif ($status === 'not_submitted') : ?>
+
+                  <p class="text-sm font-bold text-yellow-400">未回答</p>
+                  <p class="text-xs text-yellow-400">期限 <?php echo date("n月j日", strtotime('-3 day', $start_date)); ?></p>
+
                 <?php endif; ?>
               </div>
               <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
