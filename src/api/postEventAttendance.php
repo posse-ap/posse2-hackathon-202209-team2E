@@ -9,4 +9,4 @@ $userId = $_SESSION['user_id'];
 $status = $_POST['status'];
 
 $stmt = $db->prepare("INSERT INTO event_attendance(event_id, user_id, status) VALUES (?,?,?)");
-$stmt->execute([$eventId, $USER_ID, $status]);
+$stmt->execute([$eventId, $userId, $status]);
