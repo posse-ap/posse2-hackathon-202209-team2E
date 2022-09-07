@@ -20,10 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     unset($_POST['start_at']);
     unset($_POST['end_at']);
     unset($_POST['detail']);
-    $stmt = $db -> prepare(
-    'INSERT INTO events SET name=?, start_at=?, end_at=?, detail=?');
-    $stmt -> execute([$eventName, $startAt, $endAt, $eventDetail]);
-    echo('<script>alert("イベントが作成されました")</script>');
+    $stmt = $db->prepare(
+      'INSERT INTO events SET name=?, start_at=?, end_at=?, detail=?'
+    );
+    $stmt->execute([$eventName, $startAt, $endAt, $eventDetail]);
+    echo ('<script>alert("イベントが作成されました")</script>');
     // $stmt = $db -> prepare('SELECT detail FROM events WHERE name = ?');
     // $stmt -> execute([$eventName]);
     // $result = $stmt -> fetch();
@@ -45,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <title>Document</title>
+  <title>admin|schedule|posse</title>
 </head>
 
 <body>
@@ -54,11 +55,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="h-full">
         <img src="/img/header-logo.png" alt="" class="h-full">
       </div>
+      <div>
+        <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
+      </div>
     </div>
   </header>
   <main class="bg-gray-100 h-screen">
     <div class="w-full mx-auto py-10 px-5">
-      <h2 class="text-md font-bold mb-5">イベント作成</h2>
+      <h2 class="text-md font-bold mb-5">管理画面 topページ <br> イベント作成</h2>
       <?php if (isset($errorMessage)) : ?>
         <p class="text-red-500 font-bold mb-3"><?= $errorMessage ?></p>
       <?php endif; ?>
@@ -72,6 +76,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <textarea name="detail" placeholder="イベントの内容" class="w-full p-4 text-sm mb-3"></textarea>
         <input type="submit" value="作成" class="cursor-pointer w-full p-3 text-md text-white bg-blue-400 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-300">
       </form>
+      <br>
+      <h2 class="text-md font-bold mb-5"><a href='events.php'>イベント一覧へ</a></h2>
     </div>
   </main>
 </body>
