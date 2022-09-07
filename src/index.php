@@ -67,7 +67,7 @@ if ($_GET['status'] === 'absence') {
 if ($_GET['status'] === 'not_submitted') {
   $eventNotsubmittedArray = [];
   foreach ($events as $event) {
-    foreach ($eventAbsentId as $ID) {
+    foreach ($eventNotsubmittedId as $ID) {
       if ($event['id'] === $ID['event_id']) {
         array_push($eventNotsubmittedArray, $event);
         break;
@@ -141,6 +141,8 @@ function get_day_of_week($w)
           $displayEvent = $eventNotsubmittedArray;
         } else {
           $displayEvent = $events;
+
+var_dump($eventNotsubmittedArray);
 
 // 以下from develop!!!!
         // if($_GET['status'] === 'presence'){
