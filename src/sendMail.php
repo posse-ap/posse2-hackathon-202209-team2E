@@ -21,7 +21,7 @@ mb_internal_encoding('UTF-8');
 foreach($events as $event){
   foreach($users as $user){
     $to = $user['email'];
-    $subject = 'イベントの前日リマインド';
+    $subject = $event['name'] . 'の前日リマインド';
     $name = $user['name'];
     $eventName = $event['name']; 
     $startAt = $event['start_at'];
