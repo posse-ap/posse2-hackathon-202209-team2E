@@ -114,7 +114,7 @@ async function participateEvent(eventId) {
 async function notParticipateEvent(eventId) {
   try {
     let formData = new FormData();
-    formData.append('eventId', eventId)
+    formData.append('event_id', eventId)
     formData.append('status', 'absence')
     const url = '/api/postEventAttendance.php'
     await fetch(url, {
