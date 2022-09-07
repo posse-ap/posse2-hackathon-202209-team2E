@@ -4,14 +4,15 @@ require('dbconnect.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /auth/login');
-    exit();
+  header('Location: /auth/login');
+  exit();
 }
 
-$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id');
+$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id ORDER BY events.start_at ASC');
 $events = $stmt->fetchAll();
 
-function get_day_of_week ($w) {
+function get_day_of_week($w)
+{
   $day_of_week_list = ['日', '月', '火', '水', '木', '金', '土'];
   return $day_of_week_list["$w"];
 }
@@ -39,6 +40,9 @@ function get_day_of_week ($w) {
         <a href="/auth/login" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログイン</a>
       </div>
       -->
+      <div>
+        <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
+      </div>
     </div>
   </header>
 
@@ -60,12 +64,19 @@ function get_day_of_week ($w) {
           <h2 class="text-sm font-bold">一覧</h2>
         </div>
 
+        <!-- 各イベントボックス（一覧）見た目 -->
         <?php foreach ($events as $event) : ?>
           <?php
           $start_date = strtotime($event['start_at']);
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
+          
+          if ($start_date < strtotime(date('Y-m-d H:i'))) {
+            continue;
+          }
+
           ?>
+          
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
