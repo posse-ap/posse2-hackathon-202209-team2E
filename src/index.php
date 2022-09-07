@@ -37,15 +37,6 @@ if($_GET['status'] === 'presence'){
     foreach ($eventPresentId as $ID) {
       if ($event['id'] === $ID['event_id']) {
         array_push($eventPresentArray, $event);
-
-// 以下from develop!!!!!!
-// if($_GET['status'] === 'presence'){
-//   $eventArray=[];
-//   foreach($events as $event){
-//     foreach($eventId as $ID){
-//       if($event ['id'] === $ID['event_id']){
-//         array_push($eventArray, $event);
-
         break;
       }
     }
@@ -141,14 +132,6 @@ function get_day_of_week($w)
           $displayEvent = $eventNotsubmittedArray;
         } else {
           $displayEvent = $events;
-
-var_dump($eventNotsubmittedArray);
-
-// 以下from develop!!!!
-        // if($_GET['status'] === 'presence'){
-        //   $displayEvent=$eventArray;
-        // }else{
-        //   $displayEvent=$events;
 
         }
         foreach ($displayEvent as $event) {
