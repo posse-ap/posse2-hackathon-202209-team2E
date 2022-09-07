@@ -26,6 +26,7 @@ async function openModal(eventId) {
     const url = '/api/getModalInfo.php?eventId=' + eventId
     const res = await fetch(url)
     const event = await res.json()
+    console.log(event.status);
     let modalHTML = `
       <h2 class="text-md font-bold mb-3">${event.name}</h2>
       <p class="text-sm">${event.date}（${event.day_of_week}）</p>
@@ -41,32 +42,38 @@ async function openModal(eventId) {
 
       <p class="text-sm"><span class="text-xl">${event.total_participants}</span>人参加 ></p>
     `
-    switch (0) {
-      case 0:
+    switch (event.status) {
+      case 'presence':
         modalHTML += `
-          <div class="text-center mt-6">
-            <!--
-            <p class="text-lg font-bold text-yellow-400">未回答</p>
-            <p class="text-xs text-yellow-400">期限 ${event.deadline}</p>
-            -->
+          <div class="text-center mt-10">
+            <p class="text-xl font-bold text-green-400">参加</p>
           </div>
           <div class="flex mt-5">
-            <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
-            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="notParticipateEvent(${eventId})">参加しない</button>
+            <button id="participateButton" class="flex-1 bg-blue-500 pointer-events-none py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
+            <button id="notParticipateButton" class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="notParticipateEvent(${eventId})">参加しない</button>
           </div>
         `
         break;
-      case 1:
+      case 'absence':
         modalHTML += `
           <div class="text-center mt-10">
             <p class="text-xl font-bold text-gray-300">不参加</p>
           </div>
+          <div class="flex mt-5">
+            <button id="participateButton" class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
+            <button id="notParticipateButton" class="flex-1 bg-blue-500 pointer-events-none py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="notParticipateEvent(${eventId})">参加しない</button>
+          </div>
         `
         break;
-      case 2:
+      default:
         modalHTML += `
-          <div class="text-center mt-10">
-            <p class="text-xl font-bold text-green-400">参加</p>
+          <div class="text-center mt-6">
+            <p class="text-lg font-bold text-yellow-400">未回答</p>
+            <p class="text-xs text-yellow-400">期限 ${event.deadline}</p>
+          </div>
+          <div class="flex mt-5">
+          <button id="participateButton" class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
+          <button id="notParticipateButton" class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="notParticipateEvent(${eventId})">参加しない</button>
           </div>
         `
         break;
@@ -89,6 +96,9 @@ function toggleModal() {
   body.classList.toggle('modal-active')
 }
 
+
+const participateButton = document.getElementById("participateButton")
+
 async function participateEvent(eventId) {
   try {
     let formData = new FormData();
@@ -99,7 +109,7 @@ async function participateEvent(eventId) {
       method: 'POST',
       body: formData
     }).then((res) => {
-      if(res.status !== 200) {
+      if (res.status !== 200) {
         throw new Error("system error");
       }
       return res.text();
@@ -110,7 +120,6 @@ async function participateEvent(eventId) {
     console.log(error)
   }
 }
-
 async function notParticipateEvent(eventId) {
   try {
     let formData = new FormData();
@@ -121,7 +130,7 @@ async function notParticipateEvent(eventId) {
       method: 'POST',
       body: formData
     }).then((res) => {
-      if(res.status !== 200) {
+      if (res.status !== 200) {
         throw new Error("system error");
       }
       return res.text();
