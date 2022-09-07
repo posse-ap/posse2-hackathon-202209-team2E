@@ -4,8 +4,8 @@ require('dbconnect.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /auth/login');
-    exit();
+  header('Location: /auth/login');
+  exit();
 }
 
 $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id ORDER BY events.start_at ASC');
@@ -40,6 +40,9 @@ function get_day_of_week($w)
         <a href="/auth/login" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログイン</a>
       </div>
       -->
+      <div>
+        <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
+      </div>
     </div>
   </header>
 
