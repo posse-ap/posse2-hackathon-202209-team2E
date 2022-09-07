@@ -5,7 +5,7 @@ header('Content-Type: application/json; charset=UTF-8');
 if (isset($_GET['eventId'])) {
   $eventId = htmlspecialchars($_GET['eventId']);
   try {
-    $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, events.detail, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id WHERE events.id = ? GROUP BY events.id');
+    $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, events.detail, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id WHERE events.id = ? GROUP BY events.id');
     $stmt->execute(array($eventId));
     $event = $stmt->fetch();
     
