@@ -30,7 +30,7 @@ CREATE TABLE password_resets (
 DROP TABLE IF EXISTS events;
 CREATE TABLE events (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
-  name VARCHAR(10) NOT NULL,
+  name VARCHAR(255) NOT NULL,
   start_at DATETIME,
   end_at DATETIME,
   detail VARCHAR(255),
