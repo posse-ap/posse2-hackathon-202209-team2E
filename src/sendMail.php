@@ -38,7 +38,6 @@ foreach($results as $result){
   {$startAt} ~ {$endAt}
   に開催します。
   {$detail}
-  お楽しみに！
   EOT;
   mb_send_mail($to, $subject, $body, $headers);
 }
