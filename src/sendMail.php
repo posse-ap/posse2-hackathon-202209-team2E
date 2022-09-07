@@ -9,6 +9,7 @@ $eventDate = [
 $stmt = $db -> prepare(
   'SELECT 
   events.name event,
+  events.detail,
   TIME_FORMAT(start_at, "%H:%i") start_at, 
   TIME_FORMAT(end_at, "%H:%i") end_at ,
   users.name name,
@@ -26,6 +27,7 @@ foreach($results as $result){
   $subject = $result['event'] . 'の前日リマインド';
   $name = $result['name'];
   $eventName = $result['event']; 
+  $detail = $result['detail'];
   $startAt = $result['start_at'];
   $endAt = $result['end_at'];
   $headers = ["From"=>"system@posse-ap.com", "Content-Type"=>"text/plain; charset=UTF-8", "Content-Transfer-Encoding"=>"8bit"];
@@ -34,7 +36,9 @@ foreach($results as $result){
 
   明日、{$eventName}を
   {$startAt} ~ {$endAt}
-  に開催します。お楽しみに！
+  に開催します。
+  {$detail}
+  お楽しみに！
   EOT;
   mb_send_mail($to, $subject, $body, $headers);
 }
