@@ -92,7 +92,7 @@ function toggleModal() {
 async function participateEvent(eventId) {
   try {
     let formData = new FormData();
-    formData.append('eventId', eventId)
+    formData.append('event_id', eventId)
     formData.append('status', 'presence')
     const url = '/api/postEventAttendance.php'
     await fetch(url, {
