@@ -1,37 +1,16 @@
 <?php
-require('dbconnect.php');
+
+require('/var/www/html/dbconnect.php');
 
 session_start();
 
-if (!isset($_SESSION['user_id'])) {
+if ($_SESSION['role_id'] !== '2') {
   header('Location: /auth/login');
   exit();
 }
 
-// イベントの情報を取得
 $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id ORDER BY events.start_at ASC');
-
 $events = $stmt->fetchAll();
-
-// ログインしているユーザーの参加ステータスを取得
-$stmt = $db->prepare('SELECT event_id, status FROM event_attendance WHERE user_id = ?');
-$stmt->execute([$_SESSION['user_id']]);
-$eventAttendances = $stmt->fetchAll();
-$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="presence"');
-$stmt->execute([$_SESSION['user_id']]);
-$eventId = $stmt->fetchAll();
-
-if($_GET['status'] === 'presence'){
-  $eventArray=[];
-  foreach($events as $event){
-    foreach($eventId as $ID){
-      if($event ['id'] === $ID['event_id']){
-        array_push($eventArray, $event);
-        break;
-      }
-    }
-  }
-}
 
 function get_day_of_week($w)
 {
@@ -48,14 +27,14 @@ function get_day_of_week($w)
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <title>Schedule | POSSE</title>
+  <title>admin | schedule</title>
 </head>
 
 <body>
   <header class="h-16">
     <div class="flex justify-between items-center w-full h-full mx-auto pl-2 pr-5">
       <div class="h-full">
-        <img src="img/header-logo.png" alt="" class="h-full">
+        <img src="../img/header-logo.png" alt="" class="h-full">
       </div>
       <!--
       <div>
@@ -63,39 +42,33 @@ function get_day_of_week($w)
       </div>
       -->
       <div>
-        <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
+        <a href="index.php" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">top</a>
       </div>
     </div>
   </header>
 
   <main class="bg-gray-100">
     <div class="w-full mx-auto p-5">
-
+      <!--
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">
-          <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
-          <a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
-
-          <!-- <a href="" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a> -->
-          <!-- <a href="" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a> -->
+          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
+          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
+          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
         </div>
       </div>
-
+      -->
       <div id="events-list">
         <div class="flex justify-between items-center mb-3">
-          <h2 class="text-sm font-bold">一覧</h2>
+          <h2 class="text-sm font-bold">管理画面 イベント一覧</h2>
         </div>
 
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
         $futureEvents = [];
-        if($_GET['status'] === 'presence'){
-          $displayEvent=$eventArray;
-        }else{
-          $displayEvent=$events;
-        }
-        foreach ($displayEvent as $event) {
+        foreach ($events as $event) {
           $start_date = strtotime($event['start_at']);
           if ($start_date < strtotime(date('Y-m-d H:i'))) {
             continue;
@@ -146,47 +119,41 @@ function get_day_of_week($w)
           $start_date = strtotime($event['start_at']);
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
-
-          // イベントの参加ステータスを取り出す
-          $eventAttendanceIndex = array_search($event['id'], array_column($eventAttendances, 'event_id'));
-          if ($eventAttendanceIndex === false) {
-            $status = 'not_submitted';
-          } else {
-            $status = $eventAttendances[$eventAttendanceIndex]['status'];
-          }
         ?>
 
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
-            <div>
-              <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
-              <p><?php echo date("Y年n月j日(${day_of_week})", $start_date); ?></p>
-              <p class="text-xs text-gray-600">
-                <?php echo date("H:i", $start_date) . "~" . date("H:i", $end_date); ?>
-              </p>
-            </div>
-            <div class="flex flex-col justify-between text-right">
+            <a href="<?= 'editEvent.php?event_id=' . $event['id'] ?>">
               <div>
-                <?php if ($status === 'presence') : ?>
-
-                  <p class="text-sm font-bold text-green-400">参加</p>
-
-                <?php elseif ($status === 'absence') : ?>
-
-                  <p class="text-sm font-bold text-gray-300">不参加</p>
-
-                <?php elseif ($status === 'not_submitted') : ?>
-
-                  <p class="text-sm font-bold text-yellow-400">未回答</p>
-                  <p class="text-xs text-yellow-400">期限 <?php echo date("n月j日", strtotime('-3 day', $start_date)); ?></p>
-
-                <?php endif; ?>
+                <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
+                <p><?php echo date("Y年m月d日（${day_of_week}）", $start_date); ?></p>
+                <p class="text-xs text-gray-600">
+                  <?php echo date("H:i", $start_date) . "~" . date("H:i", $end_date); ?>
+                </p>
               </div>
-              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
-            </div>
+              <div class="flex flex-col justify-between text-right">
+                <div>
+                  <?php if ($event['id'] % 3 === 1) : ?>
+                    <!--
+                    <p class="text-sm font-bold text-yellow-400">未回答</p>
+                    <p class="text-xs text-yellow-400">期限 <?php echo date("m月d日", strtotime('-3 day', $end_date)); ?></p>
+                    -->
+                  <?php elseif ($event['id'] % 3 === 2) : ?>
+                    <!--
+                    <p class="text-sm font-bold text-gray-300">不参加</p>
+                    -->
+                  <?php else : ?>
+                    <!--
+                    <p class="text-sm font-bold text-green-400">参加</p>
+                    -->
+                  <?php endif; ?>
+                </div>
+                <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              </div>
+            </a>
           </div>
         <?php endforeach;
 
-        paging($max_page, $page);
+        paging($max_page, $_GET['page']);
         ?>
       </div>
     </div>
@@ -203,13 +170,13 @@ function get_day_of_week($w)
           </svg>
         </div>
 
-        <div id="modalInner"></div>
+        <!-- <div id="modalInner"></div> -->
 
       </div>
     </div>
   </div>
 
-  <script src="/js/main.js"></script>
+  <!-- <script src="/js/main.js"></script> -->
 </body>
 
 </html>
