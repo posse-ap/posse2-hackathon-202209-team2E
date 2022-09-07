@@ -18,6 +18,15 @@ CREATE TABLE users (
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
 
+DROP TABLE IF EXISTS password_resets;
+
+CREATE TABLE password_resets (
+    id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+    email VARCHAR(255) NOT NULL,
+    token VARCHAR(255) NOT NULL,
+    token_sent_at DATETIME NOT NULL
+);
+
 DROP TABLE IF EXISTS events;
 CREATE TABLE events (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
