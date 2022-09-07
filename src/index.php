@@ -12,6 +12,25 @@ $stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_a
 
 $events = $stmt->fetchAll();
 
+$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="presence"');
+$stmt->execute([$_SESSION['user_id']]);
+$eventId = $stmt->fetchAll();
+
+// var_dump($events);
+// var_dump($eventId);
+
+if($_GET{'status'} === 'presence'){
+  $eventArray=[];
+  foreach($events as $event){
+    foreach($eventId as $ID){
+      if($event ['id'] === $ID['event_id']){
+        array_push($eventArray, $event);
+        break;
+      }
+    }
+  }
+}
+
 function get_day_of_week($w)
 {
   $day_of_week_list = ['日', '月', '火', '水', '木', '金', '土'];
@@ -49,17 +68,18 @@ function get_day_of_week($w)
 
   <main class="bg-gray-100">
     <div class="w-full mx-auto p-5">
-      <!--
+
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+          <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
+          <a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+          
+          <!-- <a href="" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a> -->
+          <!-- <a href="" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a> -->
         </div>
       </div>
-      -->
+
       <div id="events-list">
         <div class="flex justify-between items-center mb-3">
           <h2 class="text-sm font-bold">一覧</h2>
@@ -68,7 +88,12 @@ function get_day_of_week($w)
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
         $futureEvents = [];
-        foreach($events as $event) {
+        if($_GET{'status'} === 'presence'){
+          $displayEvent=$eventArray;
+        }else{
+          $displayEvent=$events;
+        }
+        foreach ($displayEvent as $event) {
           $start_date = strtotime($event['start_at']);
           if ($start_date < strtotime(date('Y-m-d H:i'))) {
             continue;
@@ -86,9 +111,9 @@ function get_day_of_week($w)
         $max_page = ceil($events_num / MAX); //トータルページ数
 
 
-        if(!isset($_GET['page'])){ // $_GET['page_id'] はURLに渡された現在のページ数
+        if (!isset($_GET['page'])) { // $_GET['page_id'] はURLに渡された現在のページ数
           $page = 1; // 設定されてない場合は1ページ目にする
-        }else{
+        } else {
           $page = (int)htmlspecialchars($_GET['page']);
         }
         // 前のページ番号は1と比較して大きい方を使う
@@ -97,14 +122,15 @@ function get_day_of_week($w)
         // 次のページ番号は最大ページ数と比較して小さい方を使う
         $next = min($page + 1, $max_page);
 
-        function paging($max_page, $page = 1){
+        function paging($max_page, $page = 1)
+        {
           $prev = max($page - 1, 1); // 前のページ番号
           $next = min($page + 1, $max_page); // 次のページ番号
-        
+
           if ($page != 1) { // 最初のページ以外で「前へ」を表示
             print '<a href="?page=' . $prev . '">&laquo; 前へ</a>';
           }
-          if ($page < $max_page){ // 最後のページ以外で「次へ」を表示
+          if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
             print '<a href="?page=' . $next . '">次へ &raquo;</a>';
           }
         }
@@ -112,13 +138,13 @@ function get_day_of_week($w)
         // 1ページに10個だけ表示させる
         $startNo = ($page - 1) * MAX;
 
-        $disp_data = array_slice($futureEvents,$startNo,MAX,true);
+        $disp_data = array_slice($futureEvents, $startNo, MAX, true);
 
         foreach ($disp_data as $event) :
           $start_date = strtotime($event['start_at']);
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
-          ?>
+        ?>
 
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
