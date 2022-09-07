@@ -186,7 +186,7 @@ function get_day_of_week($w)
           </div>
         <?php endforeach;
 
-        paging($max_page, $_GET['page']);
+        paging($max_page, $page);
         ?>
       </div>
     </div>
