@@ -109,6 +109,23 @@ function get_day_of_week($w)
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">
+          <!-- <?php
+          switch($_GET['status']){
+            case '/':
+              '<a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>';
+              break;
+            case '=presence':
+              '<a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>';
+              break;
+            case 'absence':
+              '<a href="?status=absence" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>';
+              break;
+            case 'not_submitted':
+              '<a href="?status=not_submitted" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>';
+              break;
+          }
+          ?> -->
+
           <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
           <a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
           <a href="?status=absence" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
@@ -249,5 +266,4 @@ function get_day_of_week($w)
 
   <script src="/js/main.js"></script>
 </body>
-
 </html>
