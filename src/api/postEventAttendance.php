@@ -1,10 +1,12 @@
 <?php
 require('../dbconnect.php');
+session_start();
 header('Content-Type: application/json; charset=UTF-8');
+session_start();
 
-$eventId = $_POST['eventId'];
+$eventId = $_POST['event_id'];
+$userId = $_SESSION['user_id'];
+$status = $_POST['status'];
 
-if ($eventId > 0) {
-  $stmt = $db->prepare('INSERT INTO event_attendance SET event_id=?');
-  $stmt->execute(array($eventId));
-}
+$stmt = $db->prepare("INSERT INTO event_attendance(event_id, user_id, status) VALUES (?,?,?)");
+$stmt->execute([$eventId, $userId, $status]);
