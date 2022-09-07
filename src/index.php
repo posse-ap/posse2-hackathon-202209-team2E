@@ -8,7 +8,7 @@ if (!isset($_SESSION['user_id'])) {
   exit();
 }
 
-$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id');
+$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id ORDER BY start_at');
 $events = $stmt->fetchAll();
 
 function get_day_of_week($w)
@@ -25,7 +25,7 @@ function get_day_of_week($w)
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-c
+  <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <title>Schedule | POSSE</title>
 </head>
 
