@@ -20,6 +20,10 @@ $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AN
 $stmt->execute([$_SESSION['user_id']]);
 $eventAbsentId = $stmt->fetchAll();
 
+$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="unsbmitted"');
+$stmt->execute([$_SESSION['user_id']]);
+$eventUnsubmittedId = $stmt->fetchAll();
+
 
 if ($_GET{'status'} === 'presence') {
   $eventPresentArray = [];
@@ -39,6 +43,18 @@ if ($_GET{'status'} === 'absence') {
     foreach ($eventAbsentId as $ID) {
       if ($event['id'] === $ID['event_id']) {
         array_push($eventAbsentArray, $event);
+        break;
+      }
+    }
+  }
+}
+
+if ($_GET{'status'} === 'unsubmitted') {
+  $eventUnsubmittedArray = [];
+  foreach ($events as $event) {
+    foreach ($eventAbsentId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
+        array_push($eventUnsubmittedArray, $event);
         break;
       }
     }
@@ -91,7 +107,7 @@ function get_day_of_week($w)
           <a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
 
           <a href="?status=absence" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
-          <!-- <a href="" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a> -->
+          <a href="?status=unsubmitted" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
         </div>
       </div>
 
@@ -107,6 +123,8 @@ function get_day_of_week($w)
           $displayEvent = $eventPresentArray;
         } elseif ($_GET{'status'} === 'absence') {
           $displayEvent = $eventAbsentArray;
+        } elseif ($_GET{'status'} === 'unsubmitted') {
+          $displayEvent = $eventUnsubmittedArray;
         } else {
           $displayEvent = $events;
         }
