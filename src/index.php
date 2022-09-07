@@ -155,7 +155,7 @@ function get_day_of_week($w)
                 <?php elseif ($status === 'not_submitted') : ?>
 
                   <p class="text-sm font-bold text-yellow-400">未回答</p>
-                  <p class="text-xs text-yellow-400">期限 <?php echo date("n月j日", strtotime('-3 day', $end_date)); ?></p>
+                  <p class="text-xs text-yellow-400">期限 <?php echo date("n月j日", strtotime('-3 day', $start_date)); ?></p>
 
                 <?php endif; ?>
               </div>
