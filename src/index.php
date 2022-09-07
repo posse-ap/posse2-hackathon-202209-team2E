@@ -4,11 +4,11 @@ require('dbconnect.php');
 session_start();
 
 if (!isset($_SESSION['user_id'])) {
-    header('Location: /auth/login');
-    exit();
+  header('Location: /auth/login');
+  exit();
 }
 
-$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id ORDER BY events.start_at ASC');
+$stmt = $db->query('SELECT events.id, events.name, events.start_at, events.end_at, count(event_attendance.id) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id GROUP BY events.id');
 $events = $stmt->fetchAll();
 
 function get_day_of_week($w)
@@ -67,13 +67,12 @@ function get_day_of_week($w)
           $start_date = strtotime($event['start_at']);
           $end_date = strtotime($event['end_at']);
           $day_of_week = get_day_of_week(date("w", $start_date));
-          
+
           if ($start_date < strtotime(date('Y-m-d H:i'))) {
             continue;
           }
-
           ?>
-          
+
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
@@ -99,10 +98,45 @@ function get_day_of_week($w)
                   -->
                 <?php endif; ?>
               </div>
-              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加 ></p>
+              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
             </div>
           </div>
         <?php endforeach; ?>
+        <!-- 以下ページネーション -->
+        <?php
+        define('MAX', '10'); //1ページの記事の表示数
+
+        $events_num = count($events); //トータルデータ件数
+        $max_page = ceil($events_num / MAX); //トータルページ数
+
+        $page = (int) $_GET['page'];
+        // 前のページ番号は1と比較して大きい方を使う
+        $prev = max($page - 1, 1);
+
+        // 次のページ番号は最大ページ数と比較して小さい方を使う
+        $next = min($page + 1, $max_page);
+
+        function paging($max_page, $page = 1){
+          $page = (int) htmlspecialchars($page);
+        
+          $prev = max($page - 1, 1); // 前のページ番号
+          $next = min($page + 1, $max_page); // 次のページ番号
+        
+          if ($page != 1) { // 最初のページ以外で「前へ」を表示
+            print '<a href="?page=' . $prev . '">&laquo; 前へ</a>';
+          }
+          if ($page < $max_page){ // 最後のページ以外で「次へ」を表示
+            print '<a href="?page=' . $next . '">次へ &raquo;</a>';
+          }
+        
+          /*確認用
+          print "<pre>current:".$page."\n";
+          print "next:".$next."\n";
+          print "prev:".$prev."</pre>";*/
+        }
+        
+        paging($max_page, $_GET['page']);
+        ?>
       </div>
     </div>
   </main>

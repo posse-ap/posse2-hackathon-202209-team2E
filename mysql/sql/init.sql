@@ -66,7 +66,14 @@ INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/
 INSERT INTO events SET name='スぺモク', start_at='2022/10/26 18:00', end_at='2022/10/06 22:00';
 INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
 INSERT INTO events SET name='ハッカソン', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
-INSERT INTO events SET name='縦モク', start_at='2023/01/1 18:00', end_at='2022/01/03 22:00';
+INSERT INTO events SET name='縦モク', start_at='2023/01/1 18:00', end_at='2023/01/03 22:00';
+INSERT INTO events SET name='横モク', start_at='2023/01/1 18:00', end_at='2023/01/03 22:00';
+INSERT INTO events SET name='縦モク', start_at='2023/01/1 18:00', end_at='2023/01/03 22:00';
+INSERT INTO events SET name='遊び', start_at='2023/08/1 18:00', end_at='2023/08/03 22:00';
+INSERT INTO events SET name='スぺモク', start_at='2023/07/1 18:00', end_at='2023/07/03 22:00';
+INSERT INTO events SET name='縦モク', start_at='2023/04/1 18:00', end_at='2023/04/03 22:00';
+INSERT INTO events SET name='遊び', start_at='2023/01/1 18:00', end_at='2023/01/03 22:00';
+INSERT INTO events SET name='縦モク', start_at='2023/01/1 18:00', end_at='2023/01/03 22:00';
 
 INSERT INTO event_attendance SET event_id=1, user_id=1;
 INSERT INTO event_attendance SET event_id=1, user_id=2;
