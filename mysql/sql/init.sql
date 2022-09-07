@@ -34,6 +34,7 @@ CREATE TABLE event_attendance (
   id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
   event_id INT NOT NULL,
   user_id INT,
+  status VARCHAR(255) NOT NULL,
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   deleted_at DATETIME,
@@ -82,9 +83,9 @@ INSERT INTO events SET name='遊び', start_at='2022/09/26 18:00', end_at='2022/
 INSERT INTO events SET name='ハッカソン', start_at='2022/09/26 18:00', end_at='2022/09/06 22:00';
 INSERT INTO events SET name='縦モク', start_at='2023/01/1 18:00', end_at='2022/01/03 22:00';
 
-INSERT INTO event_attendance SET event_id=1, user_id=1;
-INSERT INTO event_attendance SET event_id=1, user_id=2;
-INSERT INTO event_attendance SET event_id=1, user_id=3;
-INSERT INTO event_attendance SET event_id=2, user_id=1;
-INSERT INTO event_attendance SET event_id=2, user_id=4;
-INSERT INTO event_attendance SET event_id=3, user_id=4;
+INSERT INTO event_attendance SET event_id=1, user_id=1, status='presence';
+INSERT INTO event_attendance SET event_id=1, user_id=2, status='presence';
+INSERT INTO event_attendance SET event_id=1, user_id=3, status='absence';
+INSERT INTO event_attendance SET event_id=2, user_id=1, status='presence';
+INSERT INTO event_attendance SET event_id=2, user_id=4, status='absence';
+INSERT INTO event_attendance SET event_id=3, user_id=4, status='presence';
