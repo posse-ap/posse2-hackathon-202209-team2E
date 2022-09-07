@@ -15,13 +15,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $eventName = $_POST['event'];
     $startAt = (string)$_POST['start_at'];
     $endAt = (string)$_POST['end_at'];
+    $eventDetail = $_POST['detail'];
     unset($_POST['event']);
     unset($_POST['start_at']);
     unset($_POST['end_at']);
+    unset($_POST['detail']);
     $stmt = $db -> prepare(
-    'INSERT INTO events SET name=?, start_at=?, end_at=?');
-    $stmt -> execute([$eventName, $startAt, $endAt]);
+    'INSERT INTO events SET name=?, start_at=?, end_at=?, detail=?');
+    $stmt -> execute([$eventName, $startAt, $endAt, $eventDetail]);
     echo('<script>alert("イベントが作成されました")</script>');
+    // $stmt = $db -> prepare('SELECT detail FROM events WHERE name = ?');
+    // $stmt -> execute([$eventName]);
+    // $result = $stmt -> fetch();
+    // echo(nl2br($result['detail']));
+    // ↑のようにすると改行のまま表示できる
+
   } else {
     $errorMessage = 'イベント名、開始日時、終了日時を入力してください';
   }
@@ -59,7 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>開始日時</p>
         <input name="start_at" type="text" placeholder="開始日時" class="w-full p-4 text-sm mb-3">
         <p>終了日時</p>
-        <input name="end_at" type="text" placeholder="開始終了日時" class="w-full p-4 text-sm mb-3">
+        <input name="end_at" type="text" placeholder="終了日時" class="w-full p-4 text-sm mb-3">
+        <p>イベント内容</p>
+        <textarea name="detail" placeholder="イベントの内容" class="w-full p-4 text-sm mb-3"></textarea>
         <input type="submit" value="作成" class="cursor-pointer w-full p-3 text-md text-white bg-blue-400 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-300">
       </form>
     </div>
