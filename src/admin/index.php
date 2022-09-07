@@ -12,25 +12,27 @@ if ($_SESSION['role_id'] !== '2') {
 // 作成ボタン押下時
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   if ($_POST['event'] && $_POST['start_at'] && $_POST['end_at']) {
-    $eventName = $_POST['event'];
-    $startAt = (string)$_POST['start_at'];
-    $endAt = (string)$_POST['end_at'];
-    $eventDetail = $_POST['detail'];
-    unset($_POST['event']);
-    unset($_POST['start_at']);
-    unset($_POST['end_at']);
-    unset($_POST['detail']);
-    $stmt = $db->prepare(
-      'INSERT INTO events SET name=?, start_at=?, end_at=?, detail=?'
-    );
-    $stmt->execute([$eventName, $startAt, $endAt, $eventDetail]);
-    echo ('<script>alert("イベントが作成されました")</script>');
-    // $stmt = $db -> prepare('SELECT detail FROM events WHERE name = ?');
-    // $stmt -> execute([$eventName]);
-    // $result = $stmt -> fetch();
-    // echo(nl2br($result['detail']));
-    // ↑のようにすると改行のまま表示できる
 
+    try {
+      $db->beginTransaction();
+      $eventName = $_POST['event'];
+      $startAt = (string)$_POST['start_at'];
+      $endAt = (string)$_POST['end_at'];
+      $eventDetail = $_POST['detail'];
+      unset($_POST['event']);
+      unset($_POST['start_at']);
+      unset($_POST['end_at']);
+      unset($_POST['detail']);
+      $stmt = $db->prepare('INSERT INTO events SET name=?, start_at=?, end_at=?, detail=?');
+      $stmt->execute([$eventName, $startAt, $endAt, $eventDetail]);
+      $stmt = $db->prepare('INSERT INTO event_attendance (event_id, user_id) SELECT LAST_INSERT_ID(), id FROM users');
+      $stmt->execute();
+      $db->commit();
+      echo ('<script>alert("イベントが作成されました")</script>');
+    } catch (PDOException $e) {
+      $db->rollBack();
+      exit($e->getMessage());
+    }
   } else {
     $errorMessage = 'イベント名、開始日時、終了日時を入力してください';
   }
