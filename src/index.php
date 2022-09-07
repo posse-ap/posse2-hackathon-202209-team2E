@@ -40,6 +40,9 @@ function get_day_of_week($w)
         <a href="/auth/login" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログイン</a>
       </div>
       -->
+      <div>
+        <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
+      </div>
     </div>
   </header>
 
