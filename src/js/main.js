@@ -26,6 +26,7 @@ async function openModal(eventId) {
     const url = '/api/getModalInfo.php?eventId=' + eventId
     const res = await fetch(url)
     const event = await res.json()
+    console.log(event.status);
     let modalHTML = `
       <h2 class="text-md font-bold mb-3">${event.name}</h2>
       <p class="text-sm">${event.date}（${event.day_of_week}）</p>
@@ -51,8 +52,8 @@ async function openModal(eventId) {
             -->
           </div>
           <div class="flex mt-5">
-            <button class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
-            <button class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="notParticipateEvent(${eventId})">参加しない</button>
+          <button id="participateButton" class="flex-1 bg-blue-500 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="participateEvent(${eventId})">参加する</button>
+          <button id="notParticipateButton" class="flex-1 bg-gray-300 py-2 mx-3 rounded-3xl text-white text-lg font-bold" onclick="notParticipateEvent(${eventId})">参加しない</button>
           </div>
         `
         break;
@@ -89,6 +90,9 @@ function toggleModal() {
   body.classList.toggle('modal-active')
 }
 
+
+const participateButton = document.getElementById("participateButton")
+
 async function participateEvent(eventId) {
   try {
     let formData = new FormData();
@@ -110,7 +114,6 @@ async function participateEvent(eventId) {
     console.log(error)
   }
 }
-
 async function notParticipateEvent(eventId) {
   try {
     let formData = new FormData();

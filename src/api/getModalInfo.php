@@ -1,6 +1,7 @@
 <?php
 require('../dbconnect.php');
 header('Content-Type: application/json; charset=UTF-8');
+session_start();
 
 if (isset($_GET['eventId'])) {
   $eventId = htmlspecialchars($_GET['eventId']);
@@ -8,6 +9,9 @@ if (isset($_GET['eventId'])) {
     $stmt = $db->prepare('SELECT events.id, events.name, events.start_at, events.end_at, events.detail, count(status = "presence" or null) AS total_participants FROM events LEFT JOIN event_attendance ON events.id = event_attendance.event_id WHERE events.id = ? GROUP BY events.id');
     $stmt->execute(array($eventId));
     $event = $stmt->fetch();
+    $stmt = $db->prepare('SELECT status FROM event_attendance WHERE event_id=? AND user_id=?');
+    $stmt->execute([$eventId, $_SESSION['user_id']]);
+    $eventAttendance = $stmt->fetch();
     
     $start_date = strtotime($event['start_at']);
     $end_date = strtotime($event['end_at']);
@@ -31,7 +35,7 @@ if (isset($_GET['eventId'])) {
       'end_at' => date("H:i", $end_date),
       'total_participants' => $event['total_participants'],
       'message' => $eventMessage,
-      'status' => $status,
+      'status' => $eventAttendance['status'],
       'deadline' => date("m月d日", strtotime('-3 day', $end_date)),
     ];
     
