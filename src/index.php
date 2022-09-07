@@ -65,18 +65,60 @@ function get_day_of_week($w)
         </div>
 
         <!-- 各イベントボックス（一覧）見た目 -->
-        <?php foreach ($events as $event) : ?>
-          <?php
+        <?php
+        $futureEvents = [];
+        foreach($events as $event) {
           $start_date = strtotime($event['start_at']);
-          $end_date = strtotime($event['end_at']);
-          $day_of_week = get_day_of_week(date("w", $start_date));
-          
           if ($start_date < strtotime(date('Y-m-d H:i'))) {
             continue;
           }
+          array_push($futureEvents, $event);
+        }
 
+        ?>
+
+        <!-- 以下ページネーション -->
+        <?php
+        define('MAX', 10); //1ページの記事の表示数
+
+        $events_num = count($futureEvents); //トータルデータ件数
+        $max_page = ceil($events_num / MAX); //トータルページ数
+
+
+        if(!isset($_GET['page'])){ // $_GET['page_id'] はURLに渡された現在のページ数
+          $page = 1; // 設定されてない場合は1ページ目にする
+        }else{
+          $page = (int)htmlspecialchars($_GET['page']);
+        }
+        // 前のページ番号は1と比較して大きい方を使う
+        $prev = max($page - 1, 1);
+
+        // 次のページ番号は最大ページ数と比較して小さい方を使う
+        $next = min($page + 1, $max_page);
+
+        function paging($max_page, $page = 1){
+          $prev = max($page - 1, 1); // 前のページ番号
+          $next = min($page + 1, $max_page); // 次のページ番号
+        
+          if ($page != 1) { // 最初のページ以外で「前へ」を表示
+            print '<a href="?page=' . $prev . '">&laquo; 前へ</a>';
+          }
+          if ($page < $max_page){ // 最後のページ以外で「次へ」を表示
+            print '<a href="?page=' . $next . '">次へ &raquo;</a>';
+          }
+        }
+
+        // 1ページに10個だけ表示させる
+        $startNo = ($page - 1) * MAX;
+
+        $disp_data = array_slice($futureEvents,$startNo,MAX,true);
+
+        foreach ($disp_data as $event) :
+          $start_date = strtotime($event['start_at']);
+          $end_date = strtotime($event['end_at']);
+          $day_of_week = get_day_of_week(date("w", $start_date));
           ?>
-          
+
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
@@ -102,10 +144,13 @@ function get_day_of_week($w)
                   -->
                 <?php endif; ?>
               </div>
-              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加 ></p>
+              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
             </div>
           </div>
-        <?php endforeach; ?>
+        <?php endforeach;
+
+        paging($max_page, $_GET['page']);
+        ?>
       </div>
     </div>
   </main>
