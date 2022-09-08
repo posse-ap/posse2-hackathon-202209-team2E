@@ -1,7 +1,7 @@
 <?php
 
 // 第一引数に本文、第二引数にメンションする人
-function sendMessage(string $text, array $members)
+function sendMessage(string $text, array $members, $token)
 {
   $memberId = [
     '寺下渓志郎' => '<@U041VQ2JKFT>',
@@ -31,7 +31,7 @@ function sendMessage(string $text, array $members)
   );
   curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
   $headers = array();
-  $headers[] = 'Authorization: Bearer xoxb-4051196261986-4054270876084-dqo5pk7M1xfZ1tbSMGSTrkAw';
+  $headers[] = 'Authorization: Bearer ' . $token;
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
   $result = curl_exec($ch);
