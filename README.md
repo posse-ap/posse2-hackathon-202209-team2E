@@ -7,7 +7,7 @@ docker-compose build --no-cache
 docker-compose up -d
 ```
 
-- 次のコマンドでコンテナに入り
+- 次のコマンドでコンテナに入ります。
 ```
 docker-compose exec phpfpm bash
 ```
@@ -23,6 +23,7 @@ GITHUB_CLIENT_ID=
 GITHUB_CLIENT_SECRET=
 SLACK_TOKEN=
 ```
+↑これを行わないとログイン画面が表示されません
 
 ### 動作確認
 #### ログイン
