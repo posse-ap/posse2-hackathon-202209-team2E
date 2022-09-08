@@ -2,6 +2,9 @@
 
 require('/var/www/html/dbconnect.php');
 require('sendMessage.php');
+require('/var/www/html/vendor/autoload.php');
+$dotenv = Dotenv\Dotenv::createImmutable('/var/www/html');
+$token = $dotenv->load('SLACK_TOKEN');
 
 $eventDate = [
   'start' => date('Y/m/d', strtotime('+1 day')) . ' 00:00',
@@ -47,7 +50,7 @@ foreach($results as $result){
   // メンバーを一人ずつ追加
   array_push($reminders[$eventName]['members'], $name);
 }
-var_dump($reminders);
+
 foreach($reminders as $reminder){
-  sendMessage($reminder['text'], $reminder['members']);
+  sendMessage($reminder['text'], $reminder['members'], $token['SLACK_TOKEN']);
 }
