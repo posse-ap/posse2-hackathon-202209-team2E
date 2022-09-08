@@ -93,12 +93,22 @@ function get_day_of_week($w)
           $prev = max($page - 1, 1); // 前のページ番号
           $next = min($page + 1, $max_page); // 次のページ番号
 
-          if ($page != 1) { // 最初のページ以外で「前へ」を表示
-            print '<a href="?page=' . $prev . '">&laquo; 前へ</a>';
-          }
-          if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
-            print '<a href="?page=' . $next . '">次へ &raquo;</a>';
-          }
+        ?>
+          <div class="flex justify-between">
+            <?php
+            if ($page != 1) { // 最初のページ以外で「前へ」を表示
+            ?>
+              <a href="?page=<?= $prev ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">&laquo; 前へ</a>
+            <?php
+            }
+            if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
+            ?>
+              <a href="?page=<?= $next ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">次へ &raquo;</a>
+            <?php
+            }
+            ?>
+          </div>
+        <?php
         }
 
         // 1ページに10個だけ表示させる
@@ -137,7 +147,7 @@ function get_day_of_week($w)
                     -->
                 <?php endif; ?>
               </div>
-              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <p class="text-sm w-20"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
             </div>
           </div>
         <?php endforeach;
