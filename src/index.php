@@ -207,6 +207,10 @@ function get_day_of_week($w)
             ?>
               <a href="?page=<?= $prev ?>&status=<?= $pageStatus ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">&laquo; 前へ</a>
             <?php
+            } else {
+            ?>
+              <span></span>
+            <?php
             }
             if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
             ?>
