@@ -295,6 +295,9 @@ function get_day_of_week($w)
         paging($max_page, $page);
         ?>
       </div>
+      <div>
+        <a href="/auth/github/setting" class="text-sm text-blue-400 my-3">GitHub連携設定</a>
+      </div>
     </div>
   </main>
 
