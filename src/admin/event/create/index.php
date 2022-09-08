@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <p>終了日時</p>
         <input name="end_at" type="text" placeholder="終了日時" class="w-full p-4 text-sm mb-3">
         <p>イベント内容</p>
-        <textarea name="detail" placeholder="イベントの内容" class="w-full p-4 text-sm mb-3"></textarea>
+        <textarea name="detail" placeholder="イベントの内容" class="w-full p-4 text-sm mb-3 resize-none"></textarea>
         <input type="submit" value="作成" class="cursor-pointer w-full p-3 text-md text-white bg-blue-400 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-300">
       </form>
     </div>

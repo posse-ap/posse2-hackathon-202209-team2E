@@ -1,4 +1,5 @@
 'use strict'
+const cardClassList = document.querySelectorAll('.card')
 const openModalClassList = document.querySelectorAll('.modal-open')
 const closeModalClassList = document.querySelectorAll('.modal-close')
 const overlay = document.querySelector('.modal-overlay')
@@ -9,7 +10,7 @@ const modalInnerHTML = document.getElementById('modalInner')
 for (let i = 0; i < openModalClassList.length; i++) {
   openModalClassList[i].addEventListener('click', (e) => {
     e.preventDefault()
-    let eventId = parseInt(e.currentTarget.id.replace('event-', ''))
+    let eventId = parseInt(cardClassList[i].id.replace('event-', ''))
     openModal(eventId)
   }, false)
 }
@@ -29,8 +30,8 @@ async function openModal(eventId) {
 
     let modalHTML = `
       <h2 class="text-md font-bold mb-3">${event.name}</h2>
-      <p class="text-sm">${event.date}（${event.day_of_week}）</p>
-      <p class="text-sm">${event.start_at} ~ ${event.end_at}</p>
+      <p class="text-sm">${event.date}(${event.day_of_week})</p>
+      <p class="text-sm">${event.start_at}~${event.end_at}</p>
 
       <hr class="my-4">
 
