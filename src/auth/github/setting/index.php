@@ -48,6 +48,9 @@ $github_id = $stmt->fetch()['github_id'];
           <button href="" class="block text-center bg-red-600 text-sm w-full p-3 text-white mx-auto rounded-3xl" onclick="disconnectGithub()">連携解除</button>
         </div>
       <?php endif; ?>
+      <div class="mt-6">
+        <a href="/" class="text-sm text-blue-400 my-3">イベント一覧</a>
+      </div>
   </main>
 
   <script>

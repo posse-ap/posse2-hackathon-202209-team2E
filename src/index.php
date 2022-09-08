@@ -84,7 +84,7 @@ function get_day_of_week($w)
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <title>Schedule | POSSE</title>
+  <title>イベント一覧 | POSSE</title>
 </head>
 
 <body>
@@ -273,7 +273,7 @@ function get_day_of_week($w)
 
                 <?php endif; ?>
               </div>
-              <p class="text-sm w-20 mb-3" onclick="switchParticipantsDisp(<?= $event['id'] ?>)"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <p class="text-sm w-20 mb-3 cursor-pointer" onclick="switchParticipantsDisp(<?= $event['id'] ?>)"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
               <div id="participantsArea<?= $event['id'] ?>" class="hidden">
                 <?php
                 $stmt = $db->prepare('SELECT users.name FROM event_attendance LEFT JOIN users on event_attendance.user_id = users.id WHERE status = "presence" AND event_id = ?');
@@ -294,6 +294,9 @@ function get_day_of_week($w)
 
         paging($max_page, $page);
         ?>
+      </div>
+      <div>
+        <a href="/auth/github/setting" class="text-sm text-blue-400 my-3">GitHub連携設定</a>
       </div>
     </div>
   </main>
