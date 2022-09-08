@@ -42,7 +42,7 @@ async function openModal(eventId) {
 
       <hr class="my-4">
 
-      <p class="text-sm w-20 mb-3" onclick="switchParticipantsDispInModal()"><span class="text-xl">${event.total_participants}</span>人参加</p>
+      <p class="text-sm w-20 mb-3 cursor-pointer" onclick="switchParticipantsDispInModal()"><span class="text-xl">${event.total_participants}</span>人参加</p>
       <div id="participantsArea" class="hidden">
     `
     // 参加者の名前を表示する部分

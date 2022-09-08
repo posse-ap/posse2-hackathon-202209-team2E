@@ -273,7 +273,7 @@ function get_day_of_week($w)
 
                 <?php endif; ?>
               </div>
-              <p class="text-sm w-20 mb-3" onclick="switchParticipantsDisp(<?= $event['id'] ?>)"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <p class="text-sm w-20 mb-3 cursor-pointer" onclick="switchParticipantsDisp(<?= $event['id'] ?>)"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
               <div id="participantsArea<?= $event['id'] ?>" class="hidden">
                 <?php
                 $stmt = $db->prepare('SELECT users.name FROM event_attendance LEFT JOIN users on event_attendance.user_id = users.id WHERE status = "presence" AND event_id = ?');
