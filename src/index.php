@@ -69,7 +69,7 @@ function get_day_of_week($w)
   </header>
 
   <main class="bg-gray-100">
-    <div class="w-full mx-auto p-5">
+    <div class="w-full h-screen mx-auto p-5">
 
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
