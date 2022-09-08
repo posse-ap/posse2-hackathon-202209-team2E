@@ -111,22 +111,15 @@ function toggle() {
   const jsMenu = document.querySelector(".js-menu");
   const contents = document.querySelectorAll(".contents");
   jsMenu.classList.toggle("is-active");
-  contents.forEach((content) =>{
+  contents.forEach((content) => {
     content.classList.toggle("is-open");
   })
 
 }
 
-const menu2 = document.querySelectorAll(".js-menu2");
-
-function toggle2() {
-  const jsMenu = document.querySelector(".js-menu2");
-  const contents = document.querySelectorAll(".contents2");
-  jsMenu.classList.toggle("is-active2");
-  contents.forEach((content) =>{
-    content.classList.toggle("is-open2");
-  })
-
+function switchParticipantsDisp(eventId) {
+  const participantsArea = document.getElementById(`participantsArea${eventId}`);
+  participantsArea.classList.toggle('hidden');
 }
 
 

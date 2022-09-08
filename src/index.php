@@ -85,7 +85,7 @@ function get_day_of_week($w)
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <title>Schedule | POSSE</title>
-  <link rel="stylesheet" href="/css/style.css"/>
+  <link rel="stylesheet" href="/css/style.css" />
 </head>
 
 <body>
@@ -273,18 +273,17 @@ function get_day_of_week($w)
 
                 <?php endif; ?>
               </div>
-              <p class="text-sm w-20 menu2 js-menu2" onclick="toggle2()"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
-              <div  class="contents2">
+              <p class="text-sm w-20 mb-3" onclick="switchParticipantsDisp(<?= $event['id'] ?>)"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <div id="participantsArea<?= $event['id'] ?>" class="hidden">
                 <?php
-                // var_dump($event);
-                $eventId = $event['id'];
-                // var_dump($eventId);
-                $stmt = $db->prepare('SELECT users.name FROM event_attendance left join users on event_attendance.user_id = users.id WHERE status = "presence" AND event_id = ?');
-                $stmt->execute([$eventId]);
+                $stmt = $db->prepare('SELECT users.name FROM event_attendance LEFT JOIN users on event_attendance.user_id = users.id WHERE status = "presence" AND event_id = ?');
+                $stmt->execute([$event['id']]);
                 $participateViews = $stmt->fetchAll();
-                foreach ($participateViews as $participateView ) {
-                  foreach($participateView as $participate){
-                  print_r($participate);
+                foreach ($participateViews as $participateView) {
+                  foreach ($participateView as $participant) {
+                ?>
+                    <p class="my-0"><?= $participant ?></p>
+                <?php
                   }
                 }
                 ?>
