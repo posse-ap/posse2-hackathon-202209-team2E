@@ -50,4 +50,5 @@ foreach ($events as $event) {
   }
 }
 
-echo "メールを送信しました\n";
+$message = '送信完了';
+echo "\033[32m{$message}\033[0m" . PHP_EOL;
