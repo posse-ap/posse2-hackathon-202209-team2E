@@ -26,7 +26,7 @@ async function openModal(eventId) {
     const url = '/api/getModalInfo.php?eventId=' + eventId
     const res = await fetch(url)
     const event = await res.json()
-    console.log(event.status);
+
     let modalHTML = `
       <h2 class="text-md font-bold mb-3">${event.name}</h2>
       <p class="text-sm">${event.date}（${event.day_of_week}）</p>
@@ -40,8 +40,14 @@ async function openModal(eventId) {
 
       <hr class="my-4">
 
-      <p class="text-sm"><span class="text-xl">${event.total_participants}</span>人参加 ></p>
+      <p class="menu js-menu" onclick="toggle()">${event.total_participants}人参加</p>
     `
+    event.participateView.forEach((user) => {
+      modalHTML += `<div class="contents">${user.name}</div>`
+
+    })
+    
+    
     switch (event.status) {
       case 'presence':
         modalHTML += `
@@ -85,6 +91,8 @@ async function openModal(eventId) {
   toggleModal()
 }
 
+
+
 function closeModal() {
   modalInnerHTML.innerHTML = ''
   toggleModal()
@@ -96,6 +104,20 @@ function toggleModal() {
   body.classList.toggle('modal-active')
 }
 
+const menu = document.querySelectorAll(".js-menu");
+
+function toggle() {
+  const jsMenu = document.querySelector(".js-menu");
+  const contents = document.querySelectorAll(".contents");
+  jsMenu.classList.toggle("is-active");
+  contents.forEach((content) =>{
+    content.classList.toggle("is-open");
+  })
+  
+}
+for (let i = 0; i < menu.length; i++) {
+  menu[i].addEventListener("click", toggle);
+}
 
 const participateButton = document.getElementById("participateButton")
 

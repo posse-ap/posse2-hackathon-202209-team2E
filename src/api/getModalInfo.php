@@ -19,6 +19,10 @@ if (isset($_GET['eventId'])) {
     $start_date = strtotime($event['start_at']);
     $end_date = strtotime($event['end_at']);
 
+    $stmt = $db->prepare('SELECT users.name FROM event_attendance left join users on event_attendance.user_id = users.id WHERE status = "presence" AND event_id = ?');
+    $stmt->execute([$eventId]);
+    $participateView = $stmt->fetchAll();
+
     if ($event['detail']) {
       $eventMessage = nl2br($event['detail']);
     } else {
@@ -35,6 +39,7 @@ if (isset($_GET['eventId'])) {
       'total_participants' => $event['total_participants'],
       'message' => $eventMessage,
       'status' => $eventAttendance['status'],
+      'participateView' => $participateView,
       'deadline' => date("n月j日", strtotime('-3 day', $end_date)),
     ];
 
