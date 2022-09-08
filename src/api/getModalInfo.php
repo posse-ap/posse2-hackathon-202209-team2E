@@ -22,7 +22,7 @@ if (isset($_GET['eventId'])) {
     if ($event['detail']) {
       $eventMessage = nl2br($event['detail']);
     } else {
-      $eventMessage = date("Y年m月d日", $start_date) . '（' . get_day_of_week(date("w", $start_date)) . '） ' . date("H:i", $start_date) . '~' . date("H:i", $end_date) . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
+      $eventMessage = date("Y年m月d日", $start_date) . '（' . get_day_of_week(date("w", $start_date)) . '） ' . date("G:i", $start_date) . '~' . date("G:i", $end_date) . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
     }
 
     $array = [
@@ -30,8 +30,8 @@ if (isset($_GET['eventId'])) {
       'name' => $event['name'],
       'date' => date("Y年n月j日", $start_date),
       'day_of_week' => get_day_of_week(date("w", $start_date)),
-      'start_at' => date("H:i", $start_date),
-      'end_at' => date("H:i", $end_date),
+      'start_at' => date("G:i", $start_date),
+      'end_at' => date("G:i", $end_date),
       'total_participants' => $event['total_participants'],
       'message' => $eventMessage,
       'status' => $eventAttendance['status'],

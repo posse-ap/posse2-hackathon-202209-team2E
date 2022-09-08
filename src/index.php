@@ -168,7 +168,7 @@ function get_day_of_week($w)
         }
         foreach ($displayEvent as $event) {
           $start_date = strtotime($event['start_at']);
-          if ($start_date < strtotime(date('Y-m-d H:i'))) {
+          if ($start_date < strtotime(date('Y-m-d G:i'))) {
             continue;
           }
           array_push($futureEvents, $event);
@@ -244,9 +244,9 @@ function get_day_of_week($w)
               <p class="text-xs text-gray-600">
                 <?php
                 if (date('Y-m-d', $start_date) === date('Y-m-d', $end_date)) {
-                  echo date('H:i', $start_date) . '~' . date('H:i', $end_date);
+                  echo date('G:i', $start_date) . '~' . date('G:i', $end_date);
                 } else {
-                  echo date('H:i', $start_date) . '~' . date('n月j日 H:i', $end_date);
+                  echo date('G:i', $start_date) . '~' . date('n月j日 G:i', $end_date);
                 }
                 ?>
               </p>
