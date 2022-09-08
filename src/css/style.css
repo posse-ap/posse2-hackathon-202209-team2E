@@ -1,16 +1,11 @@
 .menu , .menu2{
-    /* background-color: purple; */
-    color: black;
-    font-size: 18px;
-    padding: 10px;
-    /* text-align: center; */
     cursor: pointer;
     user-select: none;
   }
 .contents , .contents2{
   /* text-align: center; */
   line-height: 0;
-  height: 0;
+  /* height: 0; */
   overflow: hidden;
   opacity: 0.8;
   display: none;

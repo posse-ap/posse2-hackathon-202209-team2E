@@ -273,7 +273,7 @@ function get_day_of_week($w)
 
                 <?php endif; ?>
               </div>
-              <p class="text-sm menu2 js-menu2" onclick="toggle2()"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <p class="text-sm w-20 menu2 js-menu2" onclick="toggle2()"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
               <div  class="contents2">
                 <?php
                 // var_dump($event);
