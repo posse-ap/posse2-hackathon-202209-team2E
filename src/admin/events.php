@@ -42,28 +42,19 @@ function get_day_of_week($w)
       </div>
       -->
       <div>
-        <a href="index.php" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">top</a>
+        <a href="/" class="text-sm text-blue-400 mb-3">ユーザー画面へ</a>
+      </div>
+      <div>
+        <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
       </div>
     </div>
   </header>
 
   <main class="bg-gray-100">
     <div class="w-full mx-auto p-5">
-      <!--
-      <div id="filter" class="mb-8">
-        <h2 class="text-sm font-bold mb-3">フィルター</h2>
-        <div class="flex">
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
-          <a href="" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
-        </div>
-      </div>
-      -->
       <div id="events-list">
-        <div class="flex justify-between items-center mb-3">
-          <h2 class="text-sm font-bold">管理画面 イベント一覧</h2>
-        </div>
+        <h2 class="text-sm text-blue-400 mb-3"><a href='index.php'>イベント作成へ</a></h2>
+        <h2 class="text-md font-bold mb-5">イベント一覧 | 管理画面</h2>
 
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
@@ -121,35 +112,33 @@ function get_day_of_week($w)
           $day_of_week = get_day_of_week(date("w", $start_date));
         ?>
 
-          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
-            <a href="<?= 'editEvent.php?event_id=' . $event['id'] ?>">
+          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>" onclick="location.href = '<?= 'editEvent.php?event_id=' . $event['id'] ?>'">
+            <div>
+              <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
+              <p><?php echo date("Y年m月d日（${day_of_week}）", $start_date); ?></p>
+              <p class="text-xs text-gray-600">
+                <?php echo date("H:i", $start_date) . "~" . date("H:i", $end_date); ?>
+              </p>
+            </div>
+            <div class="flex flex-col justify-between text-right">
               <div>
-                <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
-                <p><?php echo date("Y年m月d日（${day_of_week}）", $start_date); ?></p>
-                <p class="text-xs text-gray-600">
-                  <?php echo date("H:i", $start_date) . "~" . date("H:i", $end_date); ?>
-                </p>
-              </div>
-              <div class="flex flex-col justify-between text-right">
-                <div>
-                  <?php if ($event['id'] % 3 === 1) : ?>
-                    <!--
+                <?php if ($event['id'] % 3 === 1) : ?>
+                  <!--
                     <p class="text-sm font-bold text-yellow-400">未回答</p>
                     <p class="text-xs text-yellow-400">期限 <?php echo date("m月d日", strtotime('-3 day', $end_date)); ?></p>
                     -->
-                  <?php elseif ($event['id'] % 3 === 2) : ?>
-                    <!--
+                <?php elseif ($event['id'] % 3 === 2) : ?>
+                  <!--
                     <p class="text-sm font-bold text-gray-300">不参加</p>
                     -->
-                  <?php else : ?>
-                    <!--
+                <?php else : ?>
+                  <!--
                     <p class="text-sm font-bold text-green-400">参加</p>
                     -->
-                  <?php endif; ?>
-                </div>
-                <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+                <?php endif; ?>
               </div>
-            </a>
+              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+            </div>
           </div>
         <?php endforeach;
 

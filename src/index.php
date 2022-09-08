@@ -97,6 +97,11 @@ function get_day_of_week($w)
         <a href="/auth/login" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログイン</a>
       </div>
       -->
+      <?php if ($_SESSION['role_id'] === '2') : ?>
+        <div>
+          <a href="/admin" class="text-sm text-blue-400 mb-3">管理画面へ</a>
+        </div>
+      <?php endif; ?>
       <div>
         <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
       </div>
