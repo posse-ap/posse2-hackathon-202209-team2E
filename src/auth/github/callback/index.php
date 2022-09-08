@@ -1,6 +1,9 @@
 <?php
 
 require('/var/www/html/dbconnect.php');
+require('/var/www/html/vendor/autoload.php');
+$dotenv = Dotenv\Dotenv::createImmutable('/var/www/html');
+$dotenv->load();
 
 session_start();
 
@@ -14,8 +17,8 @@ $code = htmlspecialchars($_GET['code']);
 // アクセストークンの取得
 $url = 'https://github.com/login/oauth/access_token';
 $data = [
-    'client_id' => 'ee26015c6f1a5c400c2b',
-    'client_secret' => 'cffa9a4f1365a94dbf0e072d94b16c28aa96db6f',
+    'client_id' => $_ENV['GITHUB_CLIENT_ID'],
+    'client_secret' => $_ENV['GITHUB_CLIENT_SECRET'],
     'code' => $code
 ];
 $context = [
