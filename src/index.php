@@ -265,7 +265,7 @@ function get_day_of_week($w)
 
                 <?php endif; ?>
               </div>
-              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <p class="text-sm w-20"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
             </div>
           </div>
         <?php endforeach;
