@@ -12,8 +12,9 @@ DROP TABLE IF EXISTS users;
 CREATE TABLE users (
     id INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255)NOT NULL,
+    github_id VARCHAR(255) UNIQUE,
     role_id INT NOT NULL DEFAULT 1,
     FOREIGN KEY (role_id) REFERENCES roles(id)
 );
@@ -65,9 +66,9 @@ INSERT INTO users SET name='岩村潤', email='jun@email.com', password='$2y$10$
 
 INSERT INTO events SET name='HarborSもくもく会vol.23', start_at='2022/08/01 12:00', end_at='2022/08/01 16:00';
 INSERT INTO events SET name='Swift勉強会@HarborS #127', start_at='2022/08/02 11:00', end_at='2022/08/02 14:00';
-INSERT INTO events SET name='みんなでRustを楽しもうの会!!', start_at='2022/09/010 10:00', end_at='2022/09/10 13:00';
-INSERT INTO events SET name='みんなで夏を感じる納涼祭り@多摩川', start_at='2022/09/15 16:00', end_at='2022/09/15 21:00';
-INSERT INTO events SET name='再び！Tower to Tower', start_at='2022/09/20 11:00', end_at='2022/09/20 18:00';
+INSERT INTO events SET name='みんなでRustを楽しもうの会!!', start_at='2022/09/10 10:00', end_at='2022/09/10 13:00', detail='みんな大好きRust言語を使って楽しいアプリを作りましょう！事前準備はなにもいりません。HarborS利用者は無料、一般500円です。';
+INSERT INTO events SET name='みんなで夏を感じる納涼祭り@多摩川', start_at='2022/09/11 16:00', end_at='2022/09/11 21:00', detail='みんなで水遊びしたり花火したりして夏を感じましょう！';
+INSERT INTO events SET name='再び！Tower to Tower', start_at='2022/09/12 11:00', end_at='2022/09/12 18:00', detail='あの伝説のイベントが再び！履き慣れた靴でお越しください。';
 INSERT INTO events SET name='小谷さん集中講義~Nginx編~', start_at='2022/09/23 20:00', end_at='2022/09/23 22:00';
 INSERT INTO events SET name='すーさんとフロント勉強会', start_at='2022/09/25 21:00', end_at='2022/09/25 23:00';
 INSERT INTO events SET name='表参道カフェ巡りvol.3', start_at='2022/09/28 12:00', end_at='2022/09/28 15:00';
@@ -83,7 +84,7 @@ INSERT INTO events SET name='3期生と競う！JavaScriptゲーム制作大会'
 INSERT INTO events SET name='JOBerと嗜むモダンJavaScript', start_at='2022/10/30 18:00', end_at='2022/10/30 22:00';
 INSERT INTO events SET name='初心者向けCSSスタイリング講座', start_at='2022/11/05 18:00', end_at='2022/11/05 22:00';
 INSERT INTO events SET name='南青山定例ゴミ拾いもくもく会(11月)', start_at='2022/11/07 14:00', end_at='2022/11/07 16:00';
-INSERT INTO events SET name='arborSもくもく会vol.25', start_at='2022/11/10 13:00', end_at='2022/11/10 15:00';
+INSERT INTO events SET name='HarborSもくもく会vol.25', start_at='2022/11/10 13:00', end_at='2022/11/10 15:00';
 INSERT INTO events SET name='JavaScript勉強会#1534', start_at='2022/11/19 12:00', end_at='2022/11/19 17:00';
 INSERT INTO events SET name='Swift勉強会@HarborS #128', start_at='2022/11/23 15:00', end_at='2022/11/23 19:00';
 INSERT INTO events SET name='Winter Hackathon 2022', start_at='2022/12/03 12:00', end_at='2022/12/06 20:00';

@@ -25,14 +25,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $isLoginUser = password_verify($data['password'], $user['password']);
   if ($isLoginUser) {
     $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['name'];
     $_SESSION['role_id'] = $user['role_id'];
-    if ($_SESSION['role_id'] === '1') {
-      header('Location: /');
-      exit();
-    } else {
-      header('Location: /admin');
-      exit();
-    }
+    header('Location: /');
+    exit();
   } else {
     $_SESSION['error_message'] = 'メールアドレスまたはパスワードが間違っています';
     header('Location: /auth/login');
@@ -77,6 +73,9 @@ unset($_SESSION['error_message']);
         <input name="password" type="password" placeholder="パスワード" class="w-full p-4 text-sm mb-3">
         <input type="submit" value="ログイン" class="cursor-pointer w-full p-3 text-md text-white bg-blue-400 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-300">
       </form>
+      <div class="mt-6 border-solid	border-t border-gray-300 pt-6">
+        <a href="https://github.com/login/oauth/authorize?client_id=ee26015c6f1a5c400c2b" class="block text-center bg-black text-sm w-full p-3 text-white mx-auto rounded-3xl">GitHubでログイン</a>
+      </div>
       <div class="text-center text-xs text-gray-400 mt-6">
         <a href="/auth/reset">パスワードを忘れた方はこちら</a>
       </div>
