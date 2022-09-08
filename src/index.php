@@ -21,11 +21,11 @@ $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AN
 $stmt->execute([$_SESSION['user_id']]);
 $eventId = $stmt->fetchAll();
 
-if($_GET['status'] === 'presence'){
-  $eventArray=[];
-  foreach($events as $event){
-    foreach($eventId as $ID){
-      if($event ['id'] === $ID['event_id']){
+if ($_GET['status'] === 'presence') {
+  $eventArray = [];
+  foreach ($events as $event) {
+    foreach ($eventId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
         array_push($eventArray, $event);
         break;
       }
@@ -90,10 +90,10 @@ function get_day_of_week($w)
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
         $futureEvents = [];
-        if($_GET['status'] === 'presence'){
-          $displayEvent=$eventArray;
-        }else{
-          $displayEvent=$events;
+        if ($_GET['status'] === 'presence') {
+          $displayEvent = $eventArray;
+        } else {
+          $displayEvent = $events;
         }
         foreach ($displayEvent as $event) {
           $start_date = strtotime($event['start_at']);
@@ -129,12 +129,22 @@ function get_day_of_week($w)
           $prev = max($page - 1, 1); // 前のページ番号
           $next = min($page + 1, $max_page); // 次のページ番号
 
-          if ($page != 1) { // 最初のページ以外で「前へ」を表示
-            print '<a href="?page=' . $prev . '">&laquo; 前へ</a>';
-          }
-          if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
-            print '<a href="?page=' . $next . '">次へ &raquo;</a>';
-          }
+        ?>
+          <div class="flex justify-between">
+            <?php
+            if ($page != 1) { // 最初のページ以外で「前へ」を表示
+            ?>
+              <a href="?page=<?= $prev ?>" class="block w-fit px-2 py-1 bg-blue-400 text-base text-white font-semibold rounded hover:bg-blue-500">&laquo; 前へ</a>
+            <?php
+            }
+            if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
+            ?>
+              <a href="?page=<?= $next ?>" class="block w-fit px-2 py-1 bg-blue-400 text-base text-white font-semibold rounded hover:bg-blue-500">次へ &raquo;</a>
+            <?php
+            }
+            ?>
+          </div>
+        <?php
         }
 
         // 1ページに10個だけ表示させる
