@@ -17,21 +17,56 @@ $events = $stmt->fetchAll();
 $stmt = $db->prepare('SELECT event_id, status FROM event_attendance WHERE user_id = ?');
 $stmt->execute([$_SESSION['user_id']]);
 $eventAttendances = $stmt->fetchAll();
+
 $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="presence"');
 $stmt->execute([$_SESSION['user_id']]);
-$eventId = $stmt->fetchAll();
+$eventPresentId = $stmt->fetchAll();
+
+$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="absence"');
+$stmt->execute([$_SESSION['user_id']]);
+$eventAbsentId = $stmt->fetchAll();
+
+$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="not_submitted"');
+$stmt->execute([$_SESSION['user_id']]);
+$eventNotsubmittedId = $stmt->fetchAll();
+
 
 if($_GET['status'] === 'presence'){
-  $eventArray=[];
-  foreach($events as $event){
-    foreach($eventId as $ID){
-      if($event ['id'] === $ID['event_id']){
-        array_push($eventArray, $event);
+  $eventPresentArray = [];
+  foreach ($events as $event) {
+    foreach ($eventPresentId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
+        array_push($eventPresentArray, $event);
         break;
       }
     }
   }
 }
+
+if ($_GET['status'] === 'absence') {
+  $eventAbsentArray = [];
+  foreach ($events as $event) {
+    foreach ($eventAbsentId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
+        array_push($eventAbsentArray, $event);
+        break;
+      }
+    }
+  }
+}
+
+if ($_GET['status'] === 'not_submitted') {
+  $eventNotsubmittedArray = [];
+  foreach ($events as $event) {
+    foreach ($eventNotsubmittedId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
+        array_push($eventNotsubmittedArray, $event);
+        break;
+      }
+    }
+  }
+}
+
 
 function get_day_of_week($w)
 {
@@ -74,11 +109,42 @@ function get_day_of_week($w)
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">
-          <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
-          <a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
-
-          <!-- <a href="" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a> -->
-          <!-- <a href="" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a> -->
+          <?php
+          switch($_GET['status']){
+            default: 
+            ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+              <?php
+              break;
+            case 'presence':
+              ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white ">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+              <?php
+              break;
+            case 'absence':
+              ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white ">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+              <?php
+              break;
+            case 'not_submitted':
+              ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white ">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white ">未回答</a>
+              <?php
+              break;
+          }
+          ?>
         </div>
       </div>
 
@@ -90,10 +156,15 @@ function get_day_of_week($w)
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
         $futureEvents = [];
-        if($_GET['status'] === 'presence'){
-          $displayEvent=$eventArray;
-        }else{
-          $displayEvent=$events;
+        if ($_GET['status'] === 'presence') {
+          $displayEvent = $eventPresentArray;
+        } elseif ($_GET['status'] === 'absence') {
+          $displayEvent = $eventAbsentArray;
+        } elseif ($_GET['status'] === 'not_submitted') {
+          $displayEvent = $eventNotsubmittedArray;
+        } else {
+          $displayEvent = $events;
+
         }
         foreach ($displayEvent as $event) {
           $start_date = strtotime($event['start_at']);
@@ -102,7 +173,6 @@ function get_day_of_week($w)
           }
           array_push($futureEvents, $event);
         }
-
         ?>
 
         <!-- 以下ページネーション -->
@@ -211,5 +281,4 @@ function get_day_of_week($w)
 
   <script src="/js/main.js"></script>
 </body>
-
 </html>
