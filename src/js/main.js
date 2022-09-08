@@ -7,6 +7,7 @@ const body = document.querySelector('body')
 const modal = document.querySelector('.modal')
 const modalInnerHTML = document.getElementById('modalInner')
 
+// イベント一覧の各イベント名部分にクリックイベントを追加
 for (let i = 0; i < openModalClassList.length; i++) {
   openModalClassList[i].addEventListener('click', (e) => {
     e.preventDefault()
@@ -15,13 +16,13 @@ for (let i = 0; i < openModalClassList.length; i++) {
   }, false)
 }
 
+// モーダルを閉じるクリックイベント
 for (var i = 0; i < closeModalClassList.length; i++) {
   closeModalClassList[i].addEventListener('click', closeModal)
 }
-
 overlay.addEventListener('click', closeModal)
 
-
+// モーダルを開く動作
 async function openModal(eventId) {
   try {
     const url = '/api/getModalInfo.php?eventId=' + eventId
@@ -41,14 +42,16 @@ async function openModal(eventId) {
 
       <hr class="my-4">
 
-      <p class="menu js-menu" onclick="toggle()">${event.total_participants}人参加</p>
+      <p class="text-sm w-20 mb-3" onclick="switchParticipantsDispInModal()"><span class="text-xl">${event.total_participants}</span>人参加</p>
+      <div id="participantsArea" class="hidden">
     `
+    // 参加者の名前を表示する部分
     event.participateView.forEach((user) => {
-      modalHTML += `<div class="contents">${user.name}</div>`
-
+      modalHTML += `<p>${user.name}</p>`
     })
+    modalHTML += `</div>`
 
-
+    // 参加ステータスによって表示を切り替え
     switch (event.status) {
       case 'presence':
         modalHTML += `
@@ -93,7 +96,7 @@ async function openModal(eventId) {
 }
 
 
-
+// モーダルを閉じる動作
 function closeModal() {
   modalInnerHTML.innerHTML = ''
   toggleModal()
@@ -105,23 +108,17 @@ function toggleModal() {
   body.classList.toggle('modal-active')
 }
 
-const menu = document.querySelectorAll(".js-menu");
-
-function toggle() {
-  const jsMenu = document.querySelector(".js-menu");
-  const contents = document.querySelectorAll(".contents");
-  jsMenu.classList.toggle("is-active");
-  contents.forEach((content) => {
-    content.classList.toggle("is-open");
-  })
-
+// モーダル内の参加者の表示を切り替え
+function switchParticipantsDispInModal() {
+  const participantsArea = document.getElementById('participantsArea');
+  participantsArea.classList.toggle('hidden');
 }
 
+// イベント一覧の参加者表示を切り替え
 function switchParticipantsDisp(eventId) {
   const participantsArea = document.getElementById(`participantsArea${eventId}`);
   participantsArea.classList.toggle('hidden');
 }
-
 
 for (let i = 0; i < menu.length; i++) {
   menu[i].addEventListener("click", toggle);
