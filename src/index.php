@@ -243,9 +243,15 @@ function get_day_of_week($w)
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
-              <p><?php echo date("Y年n月j日(${day_of_week})", $start_date); ?></p>
+              <p><?= date('Y年n月j日(${day_of_week})', $start_date); ?></p>
               <p class="text-xs text-gray-600">
-                <?php echo date("H:i", $start_date) . "~" . date("H:i", $end_date); ?>
+                <?php
+                if (date('Y-m-d', $start_date) === date('Y-m-d', $end_date)) {
+                  echo date('H:i', $start_date) . '~' . date('H:i', $end_date);
+                } else {
+                  echo date('H:i', $start_date) . '~' . date('n月j日 H:i', $end_date);
+                }
+                ?>
               </p>
             </div>
             <div class="flex flex-col justify-between text-right">
