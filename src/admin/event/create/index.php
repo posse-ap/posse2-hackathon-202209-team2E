@@ -67,7 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   </header>
   <main class="bg-gray-100 h-screen">
     <div class="w-full mx-auto p-5">
-      <h2 class="text-sm text-blue-400 mb-3"><a href='events.php'>イベント一覧へ</a></h2>
+      <h2 class="text-sm text-blue-400 mb-3"><a href="/admin/event/list">イベント一覧へ</a></h2>
       <h2 class="text-md font-bold mb-5">イベント作成 | 管理画面</h2>
       <?php if (isset($errorMessage)) : ?>
         <p class="text-red-500 font-bold mb-3"><?= $errorMessage ?></p>

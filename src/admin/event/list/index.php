@@ -27,14 +27,14 @@ function get_day_of_week($w)
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
-  <title>admin | schedule</title>
+  <title>イベント一覧 | 管理画面</title>
 </head>
 
 <body>
   <header class="h-16">
     <div class="flex justify-between items-center w-full h-full mx-auto pl-2 pr-5">
       <div class="h-full">
-        <img src="../img/header-logo.png" alt="" class="h-full">
+        <img src="/img/header-logo.png" alt="" class="h-full">
       </div>
       <!--
       <div>
@@ -53,7 +53,7 @@ function get_day_of_week($w)
   <main class="bg-gray-100">
     <div class="w-full mx-auto p-5">
       <div id="events-list">
-        <h2 class="text-sm text-blue-400 mb-3"><a href='index.php'>イベント作成へ</a></h2>
+        <h2 class="text-sm text-blue-400 mb-3"><a href="/admin/event/create">イベント作成へ</a></h2>
         <h2 class="text-md font-bold mb-5">イベント一覧 | 管理画面</h2>
 
         <!-- 各イベントボックス（一覧）見た目 -->
@@ -122,7 +122,7 @@ function get_day_of_week($w)
           $day_of_week = get_day_of_week(date("w", $start_date));
         ?>
 
-          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>" onclick="location.href = '<?= 'editEvent.php?event_id=' . $event['id'] ?>'">
+          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>" onclick="location.href = '<?= '/admin/event/edit?event_id=' . $event['id'] ?>'">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
               <p><?php echo date("Y年m月d日（${day_of_week}）", $start_date); ?></p>

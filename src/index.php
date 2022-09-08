@@ -99,7 +99,7 @@ function get_day_of_week($w)
       -->
       <?php if ($_SESSION['role_id'] === '2') : ?>
         <div>
-          <a href="/admin" class="text-sm text-blue-400 mb-3">管理画面へ</a>
+          <a href="/admin/event/list" class="text-sm text-blue-400 mb-3">管理画面へ</a>
         </div>
       <?php endif; ?>
       <div>
