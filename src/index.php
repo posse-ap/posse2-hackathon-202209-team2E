@@ -17,21 +17,56 @@ $events = $stmt->fetchAll();
 $stmt = $db->prepare('SELECT event_id, status FROM event_attendance WHERE user_id = ?');
 $stmt->execute([$_SESSION['user_id']]);
 $eventAttendances = $stmt->fetchAll();
+
 $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="presence"');
 $stmt->execute([$_SESSION['user_id']]);
-$eventId = $stmt->fetchAll();
+$eventPresentId = $stmt->fetchAll();
 
-if($_GET['status'] === 'presence'){
-  $eventArray=[];
-  foreach($events as $event){
-    foreach($eventId as $ID){
-      if($event ['id'] === $ID['event_id']){
-        array_push($eventArray, $event);
+$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="absence"');
+$stmt->execute([$_SESSION['user_id']]);
+$eventAbsentId = $stmt->fetchAll();
+
+$stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AND status="not_submitted"');
+$stmt->execute([$_SESSION['user_id']]);
+$eventNotsubmittedId = $stmt->fetchAll();
+
+
+if ($_GET['status'] === 'presence') {
+  $eventPresentArray = [];
+  foreach ($events as $event) {
+    foreach ($eventPresentId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
+        array_push($eventPresentArray, $event);
         break;
       }
     }
   }
 }
+
+if ($_GET['status'] === 'absence') {
+  $eventAbsentArray = [];
+  foreach ($events as $event) {
+    foreach ($eventAbsentId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
+        array_push($eventAbsentArray, $event);
+        break;
+      }
+    }
+  }
+}
+
+if ($_GET['status'] === 'not_submitted') {
+  $eventNotsubmittedArray = [];
+  foreach ($events as $event) {
+    foreach ($eventNotsubmittedId as $ID) {
+      if ($event['id'] === $ID['event_id']) {
+        array_push($eventNotsubmittedArray, $event);
+        break;
+      }
+    }
+  }
+}
+
 
 function get_day_of_week($w)
 {
@@ -62,6 +97,11 @@ function get_day_of_week($w)
         <a href="/auth/login" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログイン</a>
       </div>
       -->
+      <?php if ($_SESSION['role_id'] === '2') : ?>
+        <div>
+          <a href="/admin/event/list" class="text-sm text-blue-400 mb-3">管理画面へ</a>
+        </div>
+      <?php endif; ?>
       <div>
         <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
       </div>
@@ -69,16 +109,47 @@ function get_day_of_week($w)
   </header>
 
   <main class="bg-gray-100">
-    <div class="w-full mx-auto p-5">
+    <div class="w-full h-screen mx-auto p-5">
       <p class="mb-6">ようこそ、<?= $_SESSION['user_name'] ?>さん</p>
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">
-          <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
-          <a href="?status=presence" class="filterByPresence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
-
-          <!-- <a href="" class="filterByAbsence px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a> -->
-          <!-- <a href="" class="filterByUnregistered px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a> -->
+          <?php
+          switch ($_GET['status']) {
+            default:
+          ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+            <?php
+              break;
+            case 'presence':
+            ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white ">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+            <?php
+              break;
+            case 'absence':
+            ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white ">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">未回答</a>
+            <?php
+              break;
+            case 'not_submitted':
+            ?>
+              <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white ">全て</a>
+              <a href="?status=presence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">参加</a>
+              <a href="?status=absence" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-white">不参加</a>
+              <a href="?status=not_submitted" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white ">未回答</a>
+          <?php
+              break;
+          }
+          ?>
         </div>
       </div>
 
@@ -90,10 +161,14 @@ function get_day_of_week($w)
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
         $futureEvents = [];
-        if($_GET['status'] === 'presence'){
-          $displayEvent=$eventArray;
-        }else{
-          $displayEvent=$events;
+        if ($_GET['status'] === 'presence') {
+          $displayEvent = $eventPresentArray;
+        } elseif ($_GET['status'] === 'absence') {
+          $displayEvent = $eventAbsentArray;
+        } elseif ($_GET['status'] === 'not_submitted') {
+          $displayEvent = $eventNotsubmittedArray;
+        } else {
+          $displayEvent = $events;
         }
         foreach ($displayEvent as $event) {
           $start_date = strtotime($event['start_at']);
@@ -102,7 +177,6 @@ function get_day_of_week($w)
           }
           array_push($futureEvents, $event);
         }
-
         ?>
 
         <!-- 以下ページネーション -->
@@ -129,12 +203,22 @@ function get_day_of_week($w)
           $prev = max($page - 1, 1); // 前のページ番号
           $next = min($page + 1, $max_page); // 次のページ番号
 
-          if ($page != 1) { // 最初のページ以外で「前へ」を表示
-            print '<a href="?page=' . $prev . '">&laquo; 前へ</a>';
-          }
-          if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
-            print '<a href="?page=' . $next . '">次へ &raquo;</a>';
-          }
+        ?>
+          <div class="flex justify-between">
+            <?php
+            if ($page != 1) { // 最初のページ以外で「前へ」を表示
+            ?>
+              <a href="?page=<?= $prev ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">&laquo; 前へ</a>
+            <?php
+            }
+            if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
+            ?>
+              <a href="?page=<?= $next ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">次へ &raquo;</a>
+            <?php
+            }
+            ?>
+          </div>
+        <?php
         }
 
         // 1ページに10個だけ表示させる
@@ -177,7 +261,7 @@ function get_day_of_week($w)
                 <?php elseif ($status === 'not_submitted') : ?>
 
                   <p class="text-sm font-bold text-yellow-400">未回答</p>
-                  <p class="text-xs text-yellow-400">期限 <?php echo date("n月j日", strtotime('-3 day', $start_date)); ?></p>
+                  <p class="text-xs text-yellow-400 w-20">期限 <?php echo date("n月j日", strtotime('-3 day', $start_date)); ?></p>
 
                 <?php endif; ?>
               </div>
