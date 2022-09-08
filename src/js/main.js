@@ -120,10 +120,6 @@ function switchParticipantsDisp(eventId) {
   participantsArea.classList.toggle('hidden');
 }
 
-for (let i = 0; i < menu.length; i++) {
-  menu[i].addEventListener("click", toggle);
-}
-
 const participateButton = document.getElementById("participateButton")
 
 async function participateEvent(eventId) {
