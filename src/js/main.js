@@ -29,8 +29,8 @@ async function openModal(eventId) {
     console.log(event.status);
     let modalHTML = `
       <h2 class="text-md font-bold mb-3">${event.name}</h2>
-      <p class="text-sm">${event.date}（${event.day_of_week}）</p>
-      <p class="text-sm">${event.start_at} ~ ${event.end_at}</p>
+      <p class="text-sm">${event.date}(${event.day_of_week})</p>
+      <p class="text-sm">${event.start_at}~${event.end_at}</p>
 
       <hr class="my-4">
 

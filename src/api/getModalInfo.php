@@ -16,26 +16,31 @@ if (isset($_GET['eventId'])) {
     $stmt->execute([$eventId, $_SESSION['user_id']]);
     $eventAttendance = $stmt->fetch();
 
-    $start_date = strtotime($event['start_at']);
-    $end_date = strtotime($event['end_at']);
+    $startDate = strtotime($event['start_at']);
+    $endDate = strtotime($event['end_at']);
+    $startTime = date('G:i', $startDate);
+    $endTime = date('G:i', $endDate);
+    if (date('Y-m-d', $startDate) !== date('Y-m-d', $endDate)) {
+      $endTime = date('n月j日 G:i', $endDate);
+    }
 
     if ($event['detail']) {
       $eventMessage = nl2br($event['detail']);
     } else {
-      $eventMessage = date("Y年m月d日", $start_date) . '（' . get_day_of_week(date("w", $start_date)) . '） ' . date("G:i", $start_date) . '~' . date("G:i", $end_date) . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
+      $eventMessage = date("Y年n月j日", $startDate) . '(' . get_day_of_week(date("w", $startDate)) . ') ' . $startTime . '~' . $endTime . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
     }
 
     $array = [
       'id' => $event['id'],
       'name' => $event['name'],
-      'date' => date("Y年n月j日", $start_date),
-      'day_of_week' => get_day_of_week(date("w", $start_date)),
-      'start_at' => date("G:i", $start_date),
-      'end_at' => date("G:i", $end_date),
+      'date' => date("Y年n月j日", $startDate),
+      'day_of_week' => get_day_of_week(date("w", $startDate)),
+      'start_at' => $startTime,
+      'end_at' => $endTime,
       'total_participants' => $event['total_participants'],
       'message' => $eventMessage,
       'status' => $eventAttendance['status'],
-      'deadline' => date("n月j日", strtotime('-3 day', $end_date)),
+      'deadline' => date("n月j日", strtotime('-3 day', $endDate)),
     ];
 
     echo json_encode($array, JSON_UNESCAPED_UNICODE);
