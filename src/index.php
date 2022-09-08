@@ -85,6 +85,7 @@ function get_day_of_week($w)
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
   <title>Schedule | POSSE</title>
+  <link rel="stylesheet" href="/css/style.css"/>
 </head>
 
 <body>
