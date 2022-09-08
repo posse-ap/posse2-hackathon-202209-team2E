@@ -12,16 +12,13 @@
   line-height: 0;
   height: 0;
   overflow: hidden;
-  /* opacity: 0; */
+  opacity: 0.8;
   display: none;
   transition-duration: 0.4s;
 }
 .contents.is-open , .contents2.is-open2{
-  /* border: 1px solid black; */
   padding: 10px;
-  /* line-height: normal; */
   height: auto;
-  /* opacity: 1; */
   display: block;
 }
 

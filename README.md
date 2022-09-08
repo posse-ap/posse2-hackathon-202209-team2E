@@ -9,6 +9,13 @@ docker-compose build --no-cache
 docker-compose up -d
 ```
 
+追加で以下を行なってください
+
+```bash
+docker-compose exec phpfpm bash
+composer install
+```
+
 ### 動作確認
 
 ブラウザで `http://localhost` にアクセスして、正しく画面が表示されているか確認してください
