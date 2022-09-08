@@ -1,19 +1,13 @@
 <?php
 
 // 第一引数に本文、第二引数にメンションする人
-function sendMessage(string $text, array $members, $token)
+function sendMessage(string $text, array $slack_ids, $token)
 {
-  $memberId = [
-    '寺下渓志郎' => '<@U041VQ2JKFT>',
-    '青柳仁' => '<@U041AMSQF1C>',
-    '寺嶋里紗' => '<@U041W18Q6HX>',
-    '小林哲' => '<@U041HGE5343>'
-  ];
   $mention = '';
 
   // メンション作成
-  foreach ($members as $member) {
-    $mention = $mention . ' ' . $memberId[$member];
+  foreach ($slack_ids as $slack_id) {
+    $mention = $mention . ' <@' . $slack_id . '>';
   }
 
   // 本文とメンションを結合
