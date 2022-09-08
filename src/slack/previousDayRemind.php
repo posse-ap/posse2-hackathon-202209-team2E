@@ -47,7 +47,7 @@ foreach($results as $result){
   // メンバーを一人ずつ追加
   array_push($reminders[$eventName]['members'], $name);
 }
-
+var_dump($reminders);
 foreach($reminders as $reminder){
   sendMessage($reminder['text'], $reminder['members']);
 }

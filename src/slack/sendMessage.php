@@ -32,7 +32,7 @@ function sendMessage(string $text, array $members)
   );
   curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
   $headers = array();
-  $headers[] = 'Authorization: Bearer xoxb-4051196261986-4063834374449-o8EOhW6QrqAcXOUsq1VORzZC';
+  $headers[] = 'Authorization: Bearer xoxb-4051196261986-4075485526688-alxhdGiyMqZ5QxKMHtr9xFVQ';
   curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
 
   $result = curl_exec($ch);
