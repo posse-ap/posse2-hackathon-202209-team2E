@@ -204,7 +204,7 @@ function get_day_of_week($w)
           $next = min($page + 1, $max_page); // 次のページ番号
 
         ?>
-          <div class="flex justify-between">
+          <div class="flex justify-between pb-3">
             <?php
             if ($page != 1) { // 最初のページ以外で「前へ」を表示
             ?>
@@ -243,7 +243,7 @@ function get_day_of_week($w)
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
-              <p><?= date('Y年n月j日(${day_of_week})', $start_date); ?></p>
+              <p><?= date("Y年n月j日($day_of_week)", $start_date); ?></p>
               <p class="text-xs text-gray-600">
                 <?php
                 if (date('Y-m-d', $start_date) === date('Y-m-d', $end_date)) {
