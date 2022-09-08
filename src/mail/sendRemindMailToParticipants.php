@@ -9,10 +9,10 @@ $eventDate = [
   'end' => date('Y/m/d', strtotime('+1 day')) . ' 23:59'
 ];
 $stmt = $db -> prepare(
-  'SELECT id, name, 
+  'SELECT id, name,
   events.detail,
-  TIME_FORMAT(start_at, "%H:%i") start_at, 
-  TIME_FORMAT(end_at, "%H:%i") end_at 
+  TIME_FORMAT(start_at, "%H:%i") start_at,
+  TIME_FORMAT(end_at, "%H:%i") end_at
   FROM events where start_at > ? AND start_at < ?');
 $stmt -> execute([$eventDate['start'], $eventDate['end']]);
 $events = $stmt -> fetchAll();
@@ -24,7 +24,7 @@ foreach($events as $event){
     $to = $user['email'];
     $subject = $event['name'] . 'の前日リマインド';
     $name = $user['name'];
-    $eventName = $event['name']; 
+    $eventName = $event['name'];
     $detail = $event['detail'];
     $startAt = $event['start_at'];
     $endAt = $event['end_at'];
@@ -42,4 +42,5 @@ foreach($events as $event){
   }
 }
 
-echo "メールを送信しました";
+$message = '送信完了';
+echo "\033[32m{$message}\033[0m" . PHP_EOL;

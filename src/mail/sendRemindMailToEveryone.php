@@ -7,15 +7,15 @@ $eventDate = [
   'end' => date('Y/m/d', strtotime('+1 day')) . ' 23:59'
 ];
 $stmt = $db -> prepare(
-  'SELECT 
+  'SELECT
   events.name event,
   events.detail,
-  TIME_FORMAT(start_at, "%H:%i") start_at, 
+  TIME_FORMAT(start_at, "%H:%i") start_at,
   TIME_FORMAT(end_at, "%H:%i") end_at ,
   users.name name,
-  users.email email 
+  users.email email
   FROM
-  events RIGHT JOIN event_attendance ON events.id = event_id LEFT JOIN users ON user_id = users.id 
+  events RIGHT JOIN event_attendance ON events.id = event_id LEFT JOIN users ON user_id = users.id
   where start_at > ? AND start_at < ? AND status = "presence"');
 $stmt -> execute([$eventDate['start'], $eventDate['end']]);
 $results = $stmt -> fetchAll();
@@ -26,7 +26,7 @@ foreach($results as $result){
   $to = $result['email'];
   $subject = $result['event'] . 'の前日リマインド';
   $name = $result['name'];
-  $eventName = $result['event']; 
+  $eventName = $result['event'];
   $detail = $result['detail'];
   $startAt = $result['start_at'];
   $endAt = $result['end_at'];
@@ -42,4 +42,5 @@ foreach($results as $result){
   mb_send_mail($to, $subject, $body, $headers);
 }
 
-echo "メールを送信しました";
+$message = '送信完了';
+echo "\033[32m{$message}\033[0m" . PHP_EOL;
