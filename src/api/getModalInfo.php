@@ -16,25 +16,35 @@ if (isset($_GET['eventId'])) {
     $stmt->execute([$eventId, $_SESSION['user_id']]);
     $eventAttendance = $stmt->fetch();
 
-    $start_date = strtotime($event['start_at']);
-    $end_date = strtotime($event['end_at']);
+    $startDate = strtotime($event['start_at']);
+    $endDate = strtotime($event['end_at']);
+    $startTime = date('G:i', $startDate);
+    $endTime = date('G:i', $endDate);
+    if (date('Y-m-d', $startDate) !== date('Y-m-d', $endDate)) {
+      $endTime = date('n月j日 G:i', $endDate);
+    }
+
+    $stmt = $db->prepare('SELECT users.name FROM event_attendance left join users on event_attendance.user_id = users.id WHERE status = "presence" AND event_id = ?');
+    $stmt->execute([$eventId]);
+    $participateView = $stmt->fetchAll();
 
     if ($event['detail']) {
       $eventMessage = nl2br($event['detail']);
     } else {
-      $eventMessage = date("Y年m月d日", $start_date) . '（' . get_day_of_week(date("w", $start_date)) . '） ' . date("H:i", $start_date) . '~' . date("H:i", $end_date) . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
+      $eventMessage = date("Y年n月j日", $startDate) . '(' . get_day_of_week(date("w", $startDate)) . ') ' . $startTime . '~' . $endTime . 'に' . $event['name'] . 'を開催します。<br>ぜひ参加してください。';
     }
 
     $array = [
       'id' => $event['id'],
       'name' => $event['name'],
-      'date' => date("Y年n月j日", $start_date),
-      'day_of_week' => get_day_of_week(date("w", $start_date)),
-      'start_at' => date("H:i", $start_date),
-      'end_at' => date("H:i", $end_date),
+      'date' => date("Y年n月j日", $startDate),
+      'day_of_week' => get_day_of_week(date("w", $startDate)),
+      'start_at' => $startTime,
+      'end_at' => $endTime,
       'total_participants' => $event['total_participants'],
       'message' => $eventMessage,
       'status' => $eventAttendance['status'],
+      'participateView' => $participateView,
       'deadline' => date("n月j日", strtotime('-3 day', $end_date)),
     ];
 

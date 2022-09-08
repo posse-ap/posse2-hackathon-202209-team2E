@@ -1,4 +1,5 @@
 'use strict'
+const cardClassList = document.querySelectorAll('.card')
 const openModalClassList = document.querySelectorAll('.modal-open')
 const closeModalClassList = document.querySelectorAll('.modal-close')
 const overlay = document.querySelector('.modal-overlay')
@@ -6,31 +7,32 @@ const body = document.querySelector('body')
 const modal = document.querySelector('.modal')
 const modalInnerHTML = document.getElementById('modalInner')
 
+// イベント一覧の各イベント名部分にクリックイベントを追加
 for (let i = 0; i < openModalClassList.length; i++) {
   openModalClassList[i].addEventListener('click', (e) => {
     e.preventDefault()
-    let eventId = parseInt(e.currentTarget.id.replace('event-', ''))
+    let eventId = parseInt(cardClassList[i].id.replace('event-', ''))
     openModal(eventId)
   }, false)
 }
 
+// モーダルを閉じるクリックイベント
 for (var i = 0; i < closeModalClassList.length; i++) {
   closeModalClassList[i].addEventListener('click', closeModal)
 }
-
 overlay.addEventListener('click', closeModal)
 
-
+// モーダルを開く動作
 async function openModal(eventId) {
   try {
     const url = '/api/getModalInfo.php?eventId=' + eventId
     const res = await fetch(url)
     const event = await res.json()
-    console.log(event.status);
+
     let modalHTML = `
       <h2 class="text-md font-bold mb-3">${event.name}</h2>
-      <p class="text-sm">${event.date}（${event.day_of_week}）</p>
-      <p class="text-sm">${event.start_at} ~ ${event.end_at}</p>
+      <p class="text-sm">${event.date}(${event.day_of_week})</p>
+      <p class="text-sm">${event.start_at}~${event.end_at}</p>
 
       <hr class="my-4">
 
@@ -40,8 +42,16 @@ async function openModal(eventId) {
 
       <hr class="my-4">
 
-      <p class="text-sm"><span class="text-xl">${event.total_participants}</span>人参加 ></p>
+      <p class="text-sm w-20 mb-3" onclick="switchParticipantsDispInModal()"><span class="text-xl">${event.total_participants}</span>人参加</p>
+      <div id="participantsArea" class="hidden">
     `
+    // 参加者の名前を表示する部分
+    event.participateView.forEach((user) => {
+      modalHTML += `<p>${user.name}</p>`
+    })
+    modalHTML += `</div>`
+
+    // 参加ステータスによって表示を切り替え
     switch (event.status) {
       case 'presence':
         modalHTML += `
@@ -85,6 +95,8 @@ async function openModal(eventId) {
   toggleModal()
 }
 
+
+// モーダルを閉じる動作
 function closeModal() {
   modalInnerHTML.innerHTML = ''
   toggleModal()
@@ -96,6 +108,17 @@ function toggleModal() {
   body.classList.toggle('modal-active')
 }
 
+// モーダル内の参加者の表示を切り替え
+function switchParticipantsDispInModal() {
+  const participantsArea = document.getElementById('participantsArea');
+  participantsArea.classList.toggle('hidden');
+}
+
+// イベント一覧の参加者表示を切り替え
+function switchParticipantsDisp(eventId) {
+  const participantsArea = document.getElementById(`participantsArea${eventId}`);
+  participantsArea.classList.toggle('hidden');
+}
 
 const participateButton = document.getElementById("participateButton")
 

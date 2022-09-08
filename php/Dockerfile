@@ -11,3 +11,7 @@ RUN apt-get update \
 COPY --from=builder /go/src/github.com/mailhog/mhsendmail/mhsendmail /usr/local/bin/
 RUN chmod +x /usr/local/bin/mhsendmail
 COPY ./php.ini /usr/local/etc/php/
+# composer
+COPY --from=composer /usr/bin/composer /usr/bin/composer
+# git
+RUN apt-get install -y git
