@@ -10,7 +10,7 @@ if ($_SESSION['role_id'] !== '2') {
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-  require('/admin/commitChange.php');
+  require('/var/www/html/admin/commitChange.php');
 }
 
 if (!isset($_GET['event_id'])) {

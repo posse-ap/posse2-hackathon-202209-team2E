@@ -48,11 +48,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <div class="h-full">
         <img src="/img/header-logo.png" alt="" class="h-full">
       </div>
+      <div>
+        <a href="/" class="text-sm text-blue-400 mb-3">ユーザー画面へ</a>
+      </div>
+      <div>
+        <a href="/auth/logout" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログアウト</a>
+      </div>
     </div>
   </header>
 
   <main class="bg-gray-100 h-screen">
     <div class="w-full mx-auto p-5">
+      <div class="text-sm text-blue-400 mb-3"><a href="/admin/event/list">イベント一覧</a></div>
+      <div class="text-sm text-blue-400 mb-3"><a href="/admin/event/create">イベント作成</a></div>
+      <div class="text-sm text-blue-400 mb-3"><a href="/admin/user/create">ユーザー新規登録</a></div>
       <h2 class="text-md font-bold mb-5">ユーザー新規登録 | 管理画面</h2>
       <?php if (isset($errorMessage)) : ?>
         <p class="text-red-500 font-bold mb-3"><?= $errorMessage ?></p>

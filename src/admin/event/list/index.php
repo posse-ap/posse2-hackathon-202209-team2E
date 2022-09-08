@@ -53,7 +53,9 @@ function get_day_of_week($w)
   <main class="bg-gray-100">
     <div class="w-full mx-auto p-5">
       <div id="events-list">
-        <h2 class="text-sm text-blue-400 mb-3"><a href="/admin/event/create">イベント作成へ</a></h2>
+        <div class="text-sm text-blue-400 mb-3"><a href="/admin/event/list">イベント一覧</a></div>
+        <div class="text-sm text-blue-400 mb-3"><a href="/admin/event/create">イベント作成</a></div>
+        <div class="text-sm text-blue-400 mb-3"><a href="/admin/user/create">ユーザー新規登録</a></div>
         <h2 class="text-md font-bold mb-5">イベント一覧 | 管理画面</h2>
 
         <!-- 各イベントボックス（一覧）見た目 -->
