@@ -241,9 +241,9 @@ function get_day_of_week($w)
           }
         ?>
 
-          <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
+          <div class="card bg-white mb-3 p-4 flex justify-between rounded-md shadow-md" id="event-<?php echo $event['id']; ?>">
             <div>
-              <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
+              <h3 class="font-bold text-lg mb-2"><span class="modal-open cursor-pointer hover:underline"><?php echo $event['name'] ?></span></h3>
               <p><?= date("Y年n月j日($day_of_week)", $start_date); ?></p>
               <p class="text-xs text-gray-600">
                 <?php
