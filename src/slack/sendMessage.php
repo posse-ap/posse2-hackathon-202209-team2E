@@ -1,16 +1,15 @@
 <?php
 
-// require('createMessage.php');
-
 // 第一引数に本文、第二引数にメンションする人
 function sendMessage(string $text, array $members)
 {
   $memberId = [
     '寺下渓志郎' => '<@U041VQ2JKFT>',
     '青柳仁' => '<@U041AMSQF1C>',
-    '寺嶋里紗' => '<@U041W18Q6HX>'
+    '寺嶋里紗' => '<@U041W18Q6HX>',
+    '小林哲' => '<@U041HGE5343>'
   ];
-  $mention = "";
+  $mention = '';
 
   // メンション作成
   foreach ($members as $member) {
