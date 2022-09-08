@@ -40,7 +40,7 @@ async function openModal(eventId) {
 
       <hr class="my-4">
 
-      <p class="menu js-menu" onclick="toggle()">${event.total_participants}人数</p>
+      <p class="menu js-menu" onclick="toggle()">${event.total_participants}人参加</p>
     `
     event.participateView.forEach((user) => {
       modalHTML += `<div class="contents">${user.name}</div>`

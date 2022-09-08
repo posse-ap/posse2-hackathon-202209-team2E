@@ -1,31 +1,24 @@
 .menu {
-    /* background-color: purple; */
-    color: black;
-    font-size: 18px;
-    padding: 10px;
-    /* text-align: center; */
+    font-size: 15px;
+    padding: 0px,0px,20px,20px;
     cursor: pointer;
     user-select: none;
   }
-.menu:hover,
-.menu:active,
-.menu.is-active {
-  /* background-color: black; */
-}
+
+.menu:hover{
+    font-weight: bolder;
+  }
+
 .contents {
-  /* text-align: center; */
   line-height: 0;
   height: 0;
   overflow: hidden;
-  /* opacity: 0; */
+  opacity: 0.8;
   display: none;
   transition-duration: 0.4s;
 }
 .contents.is-open {
-  /* border: 1px solid black; */
   padding: 10px;
-  /* line-height: normal; */
   height: auto;
-  /* opacity: 1; */
   display: block;
 }
