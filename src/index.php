@@ -158,6 +158,7 @@ function get_day_of_week($w)
         ?>
 
           <div class="modal-open bg-white mb-3 p-4 flex justify-between rounded-md shadow-md cursor-pointer" id="event-<?php echo $event['id']; ?>">
+          
             <div>
               <h3 class="font-bold text-lg mb-2"><?php echo $event['name'] ?></h3>
               <p><?php echo date("Y年n月j日(${day_of_week})", $start_date); ?></p>
@@ -182,7 +183,22 @@ function get_day_of_week($w)
 
                 <?php endif; ?>
               </div>
-              <p class="text-sm"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <p class="text-sm menu2 js-menu2" onclick="toggle2()"><span class="text-xl"><?php echo $event['total_participants']; ?></span>人参加</p>
+              <div  class="contents2">
+                <?php
+                // var_dump($event);
+                $eventId = $event['id'];
+                // var_dump($eventId);
+                $stmt = $db->prepare('SELECT users.name FROM event_attendance left join users on event_attendance.user_id = users.id WHERE status = "presence" AND event_id = ?');
+                $stmt->execute([$eventId]);
+                $participateViews = $stmt->fetchAll();
+                foreach ($participateViews as $participateView ) {
+                  foreach($participateView as $participate){
+                  print_r($participate);
+                  }
+                }
+                ?>
+              </div>
             </div>
           </div>
         <?php endforeach;

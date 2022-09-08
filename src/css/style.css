@@ -1,4 +1,4 @@
-.menu {
+.menu , .menu2{
     /* background-color: purple; */
     color: black;
     font-size: 18px;
@@ -7,12 +7,7 @@
     cursor: pointer;
     user-select: none;
   }
-.menu:hover,
-.menu:active,
-.menu.is-active {
-  /* background-color: black; */
-}
-.contents {
+.contents , .contents2{
   /* text-align: center; */
   line-height: 0;
   height: 0;
@@ -21,7 +16,7 @@
   display: none;
   transition-duration: 0.4s;
 }
-.contents.is-open {
+.contents.is-open , .contents2.is-open2{
   /* border: 1px solid black; */
   padding: 10px;
   /* line-height: normal; */
@@ -29,3 +24,4 @@
   /* opacity: 1; */
   display: block;
 }
+

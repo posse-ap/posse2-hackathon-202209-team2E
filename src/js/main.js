@@ -115,6 +115,20 @@ function toggle() {
   })
   
 }
+
+const menu2 = document.querySelectorAll(".js-menu2");
+
+function toggle2() {
+  const jsMenu = document.querySelector(".js-menu2");
+  const contents = document.querySelectorAll(".contents2");
+  jsMenu.classList.toggle("is-active2");
+  contents.forEach((content) =>{
+    content.classList.toggle("is-open2");
+  })
+  
+}
+
+
 for (let i = 0; i < menu.length; i++) {
   menu[i].addEventListener("click", toggle);
 }
