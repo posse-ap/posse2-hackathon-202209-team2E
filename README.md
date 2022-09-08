@@ -17,6 +17,13 @@ docker-compose exec phpfpm bash
 composer install
 ```
 
+- `/src/.env`を作成し、以下のように記述します。実際の値は連絡いただければお伝えします。
+```env
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+SLACK_TOKEN=
+```
+
 ### 動作確認
 #### ログイン
 - ブラウザで `http://localhost` にアクセスします。
