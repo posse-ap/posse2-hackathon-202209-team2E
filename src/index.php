@@ -70,7 +70,7 @@ function get_day_of_week($w)
 
   <main class="bg-gray-100">
     <div class="w-full mx-auto p-5">
-
+      <p class="mb-6">ようこそ、<?= $_SESSION['user_name'] ?>さん</p>
       <div id="filter" class="mb-8">
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">

@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $isLoginUser = password_verify($data['password'], $user['password']);
   if ($isLoginUser) {
     $_SESSION['user_id'] = $user['id'];
+    $_SESSION['user_name'] = $user['name'];
     $_SESSION['role_id'] = $user['role_id'];
     if ($_SESSION['role_id'] === '1') {
       header('Location: /');
