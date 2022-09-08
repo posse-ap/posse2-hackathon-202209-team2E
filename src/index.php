@@ -30,8 +30,9 @@ $stmt = $db->prepare('SELECT event_id FROM event_attendance WHERE user_id = ? AN
 $stmt->execute([$_SESSION['user_id']]);
 $eventNotsubmittedId = $stmt->fetchAll();
 
+$pageStatus = isset($_GET['status']) ? htmlspecialchars($_GET['status']) : '';
 
-if ($_GET['status'] === 'presence') {
+if ($pageStatus === 'presence') {
   $eventPresentArray = [];
   foreach ($events as $event) {
     foreach ($eventPresentId as $ID) {
@@ -43,7 +44,7 @@ if ($_GET['status'] === 'presence') {
   }
 }
 
-if ($_GET['status'] === 'absence') {
+if ($pageStatus === 'absence') {
   $eventAbsentArray = [];
   foreach ($events as $event) {
     foreach ($eventAbsentId as $ID) {
@@ -55,7 +56,7 @@ if ($_GET['status'] === 'absence') {
   }
 }
 
-if ($_GET['status'] === 'not_submitted') {
+if ($pageStatus === 'not_submitted') {
   $eventNotsubmittedArray = [];
   foreach ($events as $event) {
     foreach ($eventNotsubmittedId as $ID) {
@@ -92,11 +93,6 @@ function get_day_of_week($w)
       <div class="h-full">
         <img src="img/header-logo.png" alt="" class="h-full">
       </div>
-      <!--
-      <div>
-        <a href="/auth/login" class="text-white bg-blue-400 px-4 py-2 rounded-3xl bg-gradient-to-r from-blue-600 to-blue-200">ログイン</a>
-      </div>
-      -->
       <?php if ($_SESSION['role_id'] === '2') : ?>
         <div>
           <a href="/admin/event/list" class="text-sm text-blue-400 mb-3">管理画面へ</a>
@@ -115,7 +111,7 @@ function get_day_of_week($w)
         <h2 class="text-sm font-bold mb-3">フィルター</h2>
         <div class="flex">
           <?php
-          switch ($_GET['status']) {
+          switch ($pageStatus) {
             default:
           ?>
               <a href="/" class="px-3 py-2 text-md font-bold mr-2 rounded-md shadow-md bg-blue-600 text-white">全て</a>
@@ -161,11 +157,11 @@ function get_day_of_week($w)
         <!-- 各イベントボックス（一覧）見た目 -->
         <?php
         $futureEvents = [];
-        if ($_GET['status'] === 'presence') {
+        if ($pageStatus === 'presence') {
           $displayEvent = $eventPresentArray;
-        } elseif ($_GET['status'] === 'absence') {
+        } elseif ($pageStatus === 'absence') {
           $displayEvent = $eventAbsentArray;
-        } elseif ($_GET['status'] === 'not_submitted') {
+        } elseif ($pageStatus === 'not_submitted') {
           $displayEvent = $eventNotsubmittedArray;
         } else {
           $displayEvent = $events;
@@ -200,6 +196,7 @@ function get_day_of_week($w)
 
         function paging($max_page, $page = 1)
         {
+          global $pageStatus;
           $prev = max($page - 1, 1); // 前のページ番号
           $next = min($page + 1, $max_page); // 次のページ番号
 
@@ -208,12 +205,12 @@ function get_day_of_week($w)
             <?php
             if ($page != 1) { // 最初のページ以外で「前へ」を表示
             ?>
-              <a href="?page=<?= $prev ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">&laquo; 前へ</a>
+              <a href="?page=<?= $prev ?>&status=<?= $pageStatus ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">&laquo; 前へ</a>
             <?php
             }
             if ($page < $max_page) { // 最後のページ以外で「次へ」を表示
             ?>
-              <a href="?page=<?= $next ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">次へ &raquo;</a>
+              <a href="?page=<?= $next ?>&status=<?= $pageStatus ?>" class="block w-fit px-2 py-1 bg-blue-600 text-base text-white font-semibold rounded hover:bg-blue-500">次へ &raquo;</a>
             <?php
             }
             ?>
